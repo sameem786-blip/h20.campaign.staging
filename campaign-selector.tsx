@@ -174,40 +174,6 @@ export default function Component() {
       {/* Main Content */}
       <div className="max-w-4xl mx-auto p-6 space-y-8">
         {/* Current Campaigns Dropdown */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Active Campaigns</h2>
-          <div className="space-y-2">
-            <Select
-              value={selectedCampaign?.toString() || ""}
-              onValueChange={(value) => {
-                const campaignId = Number.parseInt(value);
-                setSelectedCampaign(campaignId);
-
-                const campaign = existingCampaigns.find(
-                  (c) => c.id === campaignId
-                );
-                if (campaign && selectedOption !== "existing") {
-                  router.push(
-                    `/Campaign?campaign=${encodeURIComponent(campaign.name)}`
-                  );
-                }
-
-                scrollToSection(platformSectionRef);
-              }}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a campaign" />
-              </SelectTrigger>
-              <SelectContent>
-                {existingCampaigns.map((campaign) => (
-                  <SelectItem key={campaign.id} value={campaign.id.toString()}>
-                    {campaign.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
 
         {/* Select Campaign Option */}
         <div className="space-y-4">
@@ -258,6 +224,41 @@ export default function Component() {
                 </CardDescription>
               </CardHeader>
             </Card>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Active Campaigns</h2>
+          <div className="space-y-2">
+            <Select
+              value={selectedCampaign?.toString() || ""}
+              onValueChange={(value) => {
+                const campaignId = Number.parseInt(value);
+                setSelectedCampaign(campaignId);
+
+                const campaign = existingCampaigns.find(
+                  (c) => c.id === campaignId
+                );
+                if (campaign && selectedOption !== "existing") {
+                  router.push(
+                    `/Campaign?campaign=${encodeURIComponent(campaign.name)}`
+                  );
+                }
+
+                scrollToSection(platformSectionRef);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a campaign" />
+              </SelectTrigger>
+              <SelectContent>
+                {existingCampaigns.map((campaign) => (
+                  <SelectItem key={campaign.id} value={campaign.id.toString()}>
+                    {campaign.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
