@@ -186,7 +186,7 @@ export default function Component() {
                 const campaign = existingCampaigns.find(
                   (c) => c.id === campaignId
                 );
-                if (campaign) {
+                if (campaign && selectedOption !== "existing") {
                   router.push(
                     `/Campaign?campaign=${encodeURIComponent(campaign.name)}`
                   );
@@ -464,7 +464,9 @@ export default function Component() {
                     disabled={!accounts.trim()}
                     onClick={() => {
                       router.push(
-                        `/Campaign?campaign=${encodeURIComponent(campaignName)}`
+                        `/Campaign?campaign=${encodeURIComponent(
+                          getSelectedCampaignName()
+                        )}`
                       );
                     }}
                   >
