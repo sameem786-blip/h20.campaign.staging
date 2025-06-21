@@ -62,7 +62,7 @@ const creatorsData: Creator[] = [
     youtubeSubscribers: 45000,
     youtubeBio:
       "Weekly workout routines and nutrition tips for a healthier lifestyle",
-    evaluationScore: 8,
+    evaluationScore: 3,
     evaluationReasoning:
       "High engagement rate, consistent posting, authentic content, strong fitness niche presence",
     primaryEmail: "sarah@sarahfitness.com",
@@ -87,7 +87,7 @@ const creatorsData: Creator[] = [
     youtubeChannelUrl: "https://youtube.com/c/techmike",
     youtubeSubscribers: 234000,
     youtubeBio: "In-depth tech reviews, tutorials, and industry insights",
-    evaluationScore: 9,
+    evaluationScore: 1,
     evaluationReasoning:
       "Excellent content quality, strong audience engagement, trending topics, high production value",
     primaryEmail: "mike@techreviews.com",
@@ -112,7 +112,7 @@ const creatorsData: Creator[] = [
     youtubeChannelUrl: "https://youtube.com/c/emmalifestyle",
     youtubeSubscribers: 78000,
     youtubeBio: "Lifestyle vlogs, fashion hauls, and self-care routines",
-    evaluationScore: 7,
+    evaluationScore: 3,
     evaluationReasoning:
       "Good engagement, aesthetic content, consistent branding, strong lifestyle niche",
     primaryEmail: "emma@lifestyle.co",
@@ -138,7 +138,7 @@ const creatorsData: Creator[] = [
     youtubeSubscribers: 312000,
     youtubeBio:
       "Gaming tutorials, reviews, and live streams for all skill levels",
-    evaluationScore: 8,
+    evaluationScore: 2,
     evaluationReasoning:
       "Strong gaming community, high viewer retention, consistent upload schedule, trending game coverage",
     primaryEmail: "david@gamingpro.net",
@@ -305,7 +305,7 @@ export default function CreatorsTable({ onBack }: CreatorsTableProps) {
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className="font-medium">
-                        {creator.evaluationScore}/10
+                        {creator.evaluationScore}
                       </Badge>
                     </TableCell>
                     <TableCell>
