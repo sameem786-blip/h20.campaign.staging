@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Search, MessageSquare, Target } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface NavigationProps {
   currentView: "research" | "campaigns" | "conversations";
@@ -13,6 +14,7 @@ export default function Navigation({
   onNavigate,
   title,
 }: NavigationProps) {
+  const router = useRouter();
   const navItems = [
     {
       id: "research" as const,
@@ -37,7 +39,7 @@ export default function Navigation({
         <div className="flex items-center justify-between h-16">
           {/* Logo/Brand */}
           <div className="flex items-center">
-            <h1 className="text-xl font-semibold">
+            <h1 className="text-xl font-semibold ">
               {title ? title : "Campaign Name"}
             </h1>
           </div>

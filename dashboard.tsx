@@ -36,6 +36,7 @@ import CreatorsTable from "./creators-table";
 import Navigation from "./navigation";
 import CampaignsView from "./campaigns-view";
 import ConversationsView from "./conversations-view";
+import { useRouter } from "next/navigation";
 
 // Platform data
 const platformData = {
@@ -116,6 +117,7 @@ interface CreatorDashboardProps {
 }
 
 export default function CreatorDashboard({ title }: CreatorDashboardProps) {
+  const router = useRouter();
   const [selectedStatus, setSelectedStatus] = React.useState("all");
   const [selectedRun, setSelectedRun] = React.useState<string>("");
   const [currentView, setCurrentView] = React.useState<
@@ -143,8 +145,9 @@ export default function CreatorDashboard({ title }: CreatorDashboardProps) {
     view: "research" | "campaigns" | "conversations"
   ) => {
     setCurrentNavView(view);
+    console.log("A");
     if (view === "research") {
-      setCurrentView("dashboard");
+      router.push(`/`);
     }
   };
 
