@@ -1,10 +1,17 @@
 import React from "react";
 import { Campaign, ConversationStageSlug } from "@/types/campaign";
-import { Select, SelectItem, SelectListBox, SelectPopover, SelectTrigger, SelectValue } from "@/components/ui/select2"
+import {
+  Select,
+  SelectItem,
+  SelectListBox,
+  SelectPopover,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select2";
 import { useRouter } from "next/navigation";
-import { PremiumTestimonials } from "@/components/ui/premium-testimonials"
-import { GradientButton } from "@/components/ui/gradient-button"
-import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs2"
+import { PremiumTestimonials } from "@/components/ui/premium-testimonials";
+import { GradientButton } from "@/components/ui/gradient-button";
+import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs2";
 
 // Default stage labels for fallback
 const DEFAULT_STAGE_LABELS: Record<string, string> = {
@@ -51,21 +58,30 @@ export function CampaignTimeline({
   return (
     <div className="w-full border-b border-gray-200">
       <div className="flex items-center justify-between px-4 py-3 w-full">
-        <div className="relative" style={{ minWidth: "260px", maxWidth: "340px", width: "100%" }}>
+        <div
+          className="relative"
+          style={{ minWidth: "260px", maxWidth: "340px", width: "100%" }}
+        >
           <Select
             selectedKey={currentCampaign.id.toString()}
             onSelectionChange={(key) => {
-              const selected = campaigns.find((c) => c.id.toString() === key)
-              if (selected) onCampaignChange(selected)
+              const selected = campaigns.find((c) => c.id.toString() === key);
+              if (selected) onCampaignChange(selected);
             }}
           >
-            <SelectTrigger className="w-full" style={{ minWidth: "260px", maxWidth: "340px" }}>
+            <SelectTrigger
+              className="w-full"
+              style={{ minWidth: "260px", maxWidth: "340px" }}
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectPopover>
               <SelectListBox>
                 {campaigns.map((campaign) => (
-                  <SelectItem key={campaign.id.toString()} id={campaign.id.toString()}>
+                  <SelectItem
+                    key={campaign.id.toString()}
+                    id={campaign.id.toString()}
+                  >
                     {campaign.name}
                   </SelectItem>
                 ))}
@@ -74,13 +90,31 @@ export function CampaignTimeline({
           </Select>
         </div>
 
-        <div style={{ minWidth: "180px" }}>
-          <GradientButton className="gradient-button" onClick={() => router.push("/campaigns-management")}>Campaign Management</GradientButton>
+        <div style={{ minWidth: "180px" }} className="flex gap-2">
+          <GradientButton
+            className="gradient-button"
+            onClick={() =>
+              router.push(`/campaign-analysis/${currentCampaign.id}`)
+            }
+          >
+            Campaign Analysis
+          </GradientButton>
+          <GradientButton
+            className="gradient-button"
+            onClick={() => router.push("/campaigns-management")}
+          >
+            Campaign Management
+          </GradientButton>
         </div>
       </div>
       <div className="bg-white border-b border-gray-200">
         <div className="px-6 py-4">
-          <Tabs selectedKey={currentStage} onSelectionChange={(key) => onStageClick(key as ConversationStageSlug)}>
+          <Tabs
+            selectedKey={currentStage}
+            onSelectionChange={(key) =>
+              onStageClick(key as ConversationStageSlug)
+            }
+          >
             <TabList className="flex h-12 w-full items-center justify-between rounded-lg bg-gray-100 p-1 text-gray-500 gap-0.5">
               {timelineStages.map((stage) => (
                 <Tab
@@ -95,12 +129,9 @@ export function CampaignTimeline({
                 </Tab>
               ))}
             </TabList>
-
-            
           </Tabs>
         </div>
       </div>
-      
     </div>
   );
 }
