@@ -664,7 +664,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
   className={`p-2 rounded text-xs border-l-4 ${
     item.direction === "inbound"
       ? "bg-p50 border-p200"
-      : "bg-p400 border-p600"
+      : "bg-p200 border-p600"
   }`}
 >
                         <div className="flex justify-between mb-1">
