@@ -1,3 +1,32 @@
+/* Brand Colors */
+.color-p500 { color: #FF9A63; }
+.bg-p500 { background-color: #FF9A63; }
+.border-p500 { border-color: #FF9A63; }
+
+.color-p600 { color: #E3532C !important; }
+.bg-p600 { background-color: #E3532C; }
+.border-p600 { border-color: #E3532C; }
+
+.color-p400 { color: #FFA87D; }
+.bg-p400 { background-color: #FFA87D; }
+.border-p400 { border-color: #FFA87D; }
+
+.color-p200 { color: #FFC4A5; }
+.bg-p200 { background-color: #FFC4A5; }
+.border-p200 { border-color: #FFC4A5; }
+
+.color-p50 { color: #FFF6F1; }
+.bg-p50 { background-color: #FFF6F1; }
+.border-p50 { border-color: #FFF6F1; }
+
+/* Neutral Colors */
+.color-n900 { color: #1C1C1E; }
+.bg-n900 { background-color: #1C1C1E; }
+.border-n900 { border-color: #1C1C1E; }
+
+.color-n000 { color: #FFFFFF; }
+.bg-n000 { background-color: #FFFFFF; }
+.border-n000 { border-color: #FFFFFF; }
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
 
 
@@ -10,6 +39,16 @@
 .playfair-font{
   font-family: 'Playfair Display', serif;
 }
+
+.headline-font {
+  color: #FF9A63;
+}
+
+.active-state{
+  color: #E3532C;
+}
+
+
 
 @theme inline {
   --color-background: var(--background);
@@ -286,9 +325,9 @@
     --pos-y: 91.51%;
     --spread-x: 120.24%;
     --spread-y: 103.18%;
-    --color-1: #c96287;
-    --color-2: #c66c64;
-    --color-3: #cc7d23;
+    --color-1: #E3532C;
+    --color-2: #FF9A63;
+    --color-3: #FFA87D;
     --color-4: #37140a;
     --color-5: #000;
     --border-angle: 190deg;

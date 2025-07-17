@@ -275,14 +275,15 @@ export function CreatorCard({ creator }: CreatorCardProps) {
 
   // Get brand fit text based on evaluation score
   const getBrandFitText = (): { text: string; colorClass: string } => {
-    if (creator.evaluation_score === 3) {
-      return { text: "Excellent", colorClass: "text-green-600" };
-    } else if (creator.evaluation_score === 2) {
-      return { text: "Good", colorClass: "text-blue-600" };
-    } else {
-      return { text: "N/A", colorClass: "text-gray-500" };
-    }
-  };
+  if (creator.evaluation_score === 3) {
+    return { text: "Excellent", colorClass: "color-p600" };
+  } else if (creator.evaluation_score === 2) {
+    return { text: "Good", colorClass: "color-p500" };
+  } else {
+    return { text: "N/A", colorClass: "text-gray-500" };
+  }
+};
+
 
   // Get video summary data
   const getVideoSummary = (): VideoSummary => {
@@ -445,7 +446,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
           <div className="border rounded-lg shadow-sm bg-white w-full h-full flex flex-col">
             {/* Creator Header */}
             <div className="p-3 border-b">
-              <div className="font-medium text-lg">{creator.username}</div>
+              <div className="font-medium text-lg color-n900">{creator.username}</div>
             </div>
 
             {/* Metrics Sections */}
@@ -488,24 +489,17 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                         </div>
                       ) : (
                         rates.map((rate) => (
-                          <div
-                            key={rate.id}
-                            className="flex justify-between bg-green-50 p-2 rounded-md"
-                          >
-                            <div className="flex flex-col gap-2">
-                              <div className="font-medium text-xs">
-                                {rate.name}
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {rate.notes}
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="font-medium text-sm">
-                                {rate.price} {rate.currency} / {rate.unit}
-                              </div>
-                            </div>
-                          </div>
+                          <div key={rate.id} className="flex justify-between bg-p50 p-2 rounded-md border border-p200">
+  <div className="flex flex-col gap-2">
+    <div className="font-medium text-xs color-p600">{rate.name}</div>
+    <div className="text-xs text-gray-500">{rate.notes}</div>
+  </div>
+  <div className="flex items-center gap-2">
+    <div className="font-medium text-sm color-p600">
+      {rate.price} {rate.currency} / {rate.unit}
+    </div>
+  </div>
+</div>
                         ))
                       )}
                     </div>
@@ -576,10 +570,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                                   </span>
                                 </div>
                                 <div className="w-full bg-gray-100 rounded-full h-2">
-                                  <div
-                                    className="bg-blue-500 h-2 rounded-full"
-                                    style={{ width: `${item.percentage}%` }}
-                                  ></div>
+                                  <div className="bg-p600 h-2 rounded-full" style={{ width: `${item.percentage}%` }}></div>
                                 </div>
                               </div>
                             )
@@ -614,19 +605,19 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                   disabled={isProcessingAI}
                 /> */}
                 <GradientButton
-                  disabled={!aiPrompt.trim() || isProcessingAI}
-                  className="gradient-button"
-                  onClick={handleAISubmit}
-                >
-                  {isProcessingAI ? (
-                    <div className="flex items-center justify-center gap-1">
-                      <div className="animate-spin rounded-full h-3 w-3 border-t border-b border-current"></div>
-                      Processing...
-                    </div>
-                  ) : (
-                    "Execute with AI"
-                  )}
-                </GradientButton>
+  disabled={!aiPrompt.trim() || isProcessingAI}
+  className="bg-p500 color-n000 hover:bg-p600"
+  onClick={handleAISubmit}
+>
+  {isProcessingAI ? (
+    <div className="flex items-center justify-center gap-1">
+      <div className="animate-spin rounded-full h-3 w-3 border-t border-b border-current"></div>
+      Processing...
+    </div>
+  ) : (
+    "Execute with AI"
+  )}
+</GradientButton>
                 {/* <Button
                   type="submit"
                   disabled={!aiPrompt.trim() || isProcessingAI}
@@ -648,17 +639,13 @@ export function CreatorCard({ creator }: CreatorCardProps) {
             {/* Conversation Summary Section */}
             <div className="p-3 border-t">
               <div className="flex justify-between items-center mb-2">
-                <div className="text-xs text-gray-500">
-                  Conversation Summary
-                </div>
+                <div className="text-xs color-p600 font-semibold">Conversation Summary</div>
                 <button
-                  className="py-1.5 px-3 text-center text-xs border border-gray-300 rounded-md hover:bg-gray-50"
-                  onClick={() =>
-                    router.push(`/email/${creator.conversation_id}`)
-                  }
-                >
-                  View Email Thread
-                </button>
+  className="py-1.5 px-3 text-center text-xs rounded-md bg-p500 color-n000 hover:bg-p600"
+  onClick={() => router.push(`/email/${creator.conversation_id}`)}
+>
+  View Email Thread
+</button>
               </div>
               <div className="max-h-32 overflow-y-auto">
                 {negotiationsLoading ? (
@@ -673,13 +660,13 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                   <div className="space-y-2">
                     {negotiations.map((item) => (
                       <div
-                        key={item.id}
-                        className={`p-2 rounded text-xs ${
-                          item.direction === "inbound"
-                            ? "bg-green-50 border-l-2 border-green-300"
-                            : "bg-blue-50 border-l-2 border-blue-300"
-                        }`}
-                      >
+  key={item.id}
+  className={`p-2 rounded text-xs border-l-4 ${
+    item.direction === "inbound"
+      ? "bg-p50 border-p200"
+      : "bg-p400 border-p600"
+  }`}
+>
                         <div className="flex justify-between mb-1">
                           <span className="font-medium text-xs">
                             {item.direction === "inbound"

@@ -120,10 +120,10 @@ export function CampaignTimeline({
                 <Tab
                   key={stage.value}
                   id={stage.value}
-                  className="flex-1 inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium ring-offset-background transition-all hover:bg-white/80 hover:z-10 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-white data-[selected]:text-gray-900 data-[selected]:shadow-sm data-[selected]:z-20"
+                  className="flex-1 inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium ring-offset-background transition-all hover:bg-white/80 hover:z-10 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-white data-[selected]:text-[#1C1C1E] data-[selected]:shadow-sm data-[selected]:z-20"
                 >
                   <span className="truncate">{stage.label}</span>
-                  <span className="ml-1 rounded-full bg-gray-200 px-1.5 py-0.5 text-xs font-medium data-[selected]:bg-gray-100 flex-shrink-0">
+                  <span className="ml-1 rounded-full bg-gray-200 px-1.5 py-0.5 text-xs font-medium data-[selected]:bg-gray-100 flex-shrink-0 text-[#FF9A63]">
                     {stage.count}
                   </span>
                 </Tab>
