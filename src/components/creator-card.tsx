@@ -598,6 +598,12 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                   placeholders={placeholders}
                   onChange={(e) => setAiPrompt(e.target.value)}
                   onSubmit={() => {}}
+                  onKeyDown={(e) => {
+    if (e.key === "Enter" && !e.shiftKey && aiPrompt.trim() && !isProcessingAI) {
+      e.preventDefault();
+      handleAISubmit(e);
+    }
+  }}
                 />
                 {/* <Textarea
                   value={aiPrompt}

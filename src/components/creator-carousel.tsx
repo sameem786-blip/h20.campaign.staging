@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Creator } from '@/types/creator';
 import { CreatorCard } from './creator-card';
 import { 
@@ -39,6 +39,20 @@ export function CreatorCarousel({ creators, loading }: CreatorCarouselProps) {
       opacity: 0,
     }),
   }
+  useEffect(() => {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      prevCreator();
+    } else if (e.key === 'ArrowRight') {
+      nextCreator();
+    }
+  };
+
+  window.addEventListener('keydown', handleKeyDown);
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+  };
+}, [creators.length, currentIndex]);
   if (loading) {
     return (
       <div className="flex justify-center p-12">
@@ -70,6 +84,8 @@ export function CreatorCarousel({ creators, loading }: CreatorCarouselProps) {
     setCurrentIndex(index)
   }
 
+  
+
   return (
     <div className="relative w-full mx-auto mb-8">
         <div className="relative h-[600px]">
@@ -82,8 +98,7 @@ export function CreatorCarousel({ creators, loading }: CreatorCarouselProps) {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.3 },
+                x: { type: "tween", ease: "easeInOut", duration: 0.18 },
               }}
               className="absolute inset-0"
             >

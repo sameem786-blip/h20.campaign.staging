@@ -219,7 +219,7 @@ export default function CampaignsPage() {
   }
 
   return (
-    <div className="container mx-auto py-2">
+    <div className="container mx-auto py-2 playfair-font">
       {currentCampaign && (
         <CampaignTimeline
           stages={stageCounts}
