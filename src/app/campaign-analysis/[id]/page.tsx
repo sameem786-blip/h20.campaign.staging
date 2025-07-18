@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { GradientButton } from '@/components/ui/gradient-button';
+import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs2";
+import { CardSpotlight } from "@/components/ui/card-spotlight";
 
 // Types for the API responses - all fields are optional
 interface AudienceAnalysis {
@@ -61,11 +64,15 @@ export default function CampaignAnalysisPage() {
   const params = useParams();
   const campaignId = params.id as string;
   
-  const [activeTab, setActiveTab] = useState<'qualitative' | 'quantitative'>('qualitative');
+ const [currentStage, setCurrentStage] = useState<'qualitative' | 'quantitative'>('qualitative');
   const [audienceData, setAudienceData] = useState<AudienceAnalysis | null>(null);
   const [cpmData, setCpmData] = useState<CPMAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const onStageClick = (key: 'qualitative' | 'quantitative') => {
+  setCurrentStage(key);
+};
 
   const fetchAnalysisData = async () => {
     try {
@@ -116,6 +123,11 @@ export default function CampaignAnalysisPage() {
     return `$${num.toFixed(2)}`;
   };
 
+  const timelineStages = [
+  { value: 'qualitative', label: 'Qualitative', count: audienceData?.micro_segments?.length || 0 },
+  { value: 'quantitative', label: 'Quantitative', count: cpmData?.table?.length || 0 }
+];
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -137,39 +149,38 @@ export default function CampaignAnalysisPage() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <button
-              className={`px-4 py-2 rounded-md font-medium ${
-                activeTab === 'qualitative'
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-              onClick={() => setActiveTab('qualitative')}
-            >
-              Qualitative
-            </button>
-            <button
-              className={`px-4 py-2 rounded-md font-medium ${
-                activeTab === 'quantitative'
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-              onClick={() => setActiveTab('quantitative')}
-            >
-              Quantitative
-            </button>
-          </div>
-          <button
+          <Tabs
+  selectedKey={currentStage}
+  onSelectionChange={(key) => onStageClick(key as 'qualitative' | 'quantitative')}
+>
+  <TabList className="flex h-12 w-full items-center justify-between rounded-lg bg-gray-100 p-1 text-gray-500 gap-0.5">
+    {timelineStages.map((stage) => (
+      <Tab
+        key={stage.value}
+        id={stage.value}
+        className="flex-1 inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium ring-offset-background transition-all hover:bg-white/80 hover:z-10 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-[#FFA87D] data-[selected]:text-[#1C1C1E] data-[selected]:shadow-sm data-[selected]:z-20"
+      >
+        <span className="truncate">{stage.label}</span>
+        <span className="ml-1 rounded-full bg-gray-200 px-1.5 py-0.5 text-xs font-medium data-[selected]:bg-gray-100 flex-shrink-0 text-[#FF9A63]">
+          {stage.count}
+        </span>
+      </Tab>
+    ))}
+  </TabList>
+</Tabs>
+
+          
+          <GradientButton
+            className="gradient-button"
             onClick={fetchAnalysisData}
-            className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800"
           >
             Run Analysis
-          </button>
+          </GradientButton>
         </div>
       </div>
 
       <div className="px-6 py-6">
-        {activeTab === 'qualitative' && audienceData && (
+        {currentStage === 'qualitative' && audienceData && (
           <div className="space-y-8">
             {/* Macro Persona */}
             <div className="text-center max-w-4xl mx-auto">
@@ -192,26 +203,77 @@ export default function CampaignAnalysisPage() {
                   </span>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {audienceData.micro_segments.map((segment, index) => (
-                    <div key={index} className="bg-white border border-gray-200 rounded-lg p-6">
-                      <h3 className="font-bold text-lg mb-2">{segment?.segment || 'Unknown Segment'}</h3>
-                      <div className="text-sm text-gray-600 mb-4">
-                        {segment?.views_pool_share_percent || 0}% Views Pool Share
-                      </div>
-                      <ul className="space-y-1 text-sm text-gray-700">
-                        {(segment?.core_interests || []).map((interest, idx) => (
-                          <li key={idx}>{interest}</li>
+                    <CardSpotlight key={index} className="h-96 w-96">
+      <p className="text-xl font-bold relative z-20 mt-2 text-black">
+        {segment?.segment || 'Unknown Segment'}
+      </p>
+      <div className="text-black mt-4 relative z-20">
+        {segment?.views_pool_share_percent || 0}% Views Pool Share
+        <ul className="list-none  mt-2">
+          
+          {(segment?.core_interests || []).map((interest, idx) => (
+                          <Step key={idx} title={interest} />
                         ))}
-                      </ul>
-                    </div>
+        </ul>
+      </div>
+      
+    </CardSpotlight>
+                    
                   ))}
                 </div>
               </div>
             )}
 
+<div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
+                    <CardSpotlight className="">
+                      {audienceData.network_cheatsheet?.rate_bands && (
+                        <>
+                          <p className="text-xl font-bold relative z-20 mt-2 text-black">
+                            Rate Bands
+                          </p>
+                          <div className="text-black mt-4 relative z-20">
+                            {audienceData.network_cheatsheet.rate_bands}
+                          </div>
+                        </>
+                      )}
+                      {audienceData.network_cheatsheet?.network_breakdown && (
+                        <>
+                          <p className="text-xl font-bold relative z-20 mt-2 text-black">
+                            Deliverable Breakdown
+                          </p>
+                          <div className="text-black mt-4 relative z-20">
+                            <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Step title="Instagram Only:" />
+                    <span className="font-medium">{audienceData.network_cheatsheet.network_breakdown.instagram_only || 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Step title="Cross Post Bundles:" />
+                    <span className="font-medium">{audienceData.network_cheatsheet.network_breakdown.cross_post_bundles || 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Step title="Tiktok Only:" />
+                    <span className="font-medium">{audienceData.network_cheatsheet.network_breakdown.tiktok_only || 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Step title="Youtube Only:" />
+                    <span className="font-medium">{audienceData.network_cheatsheet.network_breakdown.youtube_only || 0}</span>
+                  </div>
+                </div>
+                          </div>
+                        </>
+                      )}
+      
+                    </CardSpotlight>
+                    
+                </div>
+                </div>
+
             {/* Rate Bands */}
-            {audienceData.network_cheatsheet?.rate_bands && (
+            {/* {audienceData.network_cheatsheet?.rate_bands && (
               <div className="max-w-4xl mx-auto">
                 <h3 className="text-xl font-bold mb-4">Rate Bands</h3>
                 <div className="space-y-2">
@@ -220,10 +282,10 @@ export default function CampaignAnalysisPage() {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* Deliverable Breakdown */}
-            {audienceData.network_cheatsheet?.network_breakdown && (
+            {/* {audienceData.network_cheatsheet?.network_breakdown && (
               <div className="max-w-4xl mx-auto">
                 <h3 className="text-xl font-bold mb-4">Deliverable Breakdown</h3>
                 <div className="space-y-2">
@@ -245,7 +307,7 @@ export default function CampaignAnalysisPage() {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* No Data Message */}
             {!audienceData.macro_persona && (!audienceData.micro_segments || audienceData.micro_segments.length === 0) && !audienceData.network_cheatsheet && (
@@ -256,7 +318,7 @@ export default function CampaignAnalysisPage() {
           </div>
         )}
 
-        {activeTab === 'quantitative' && cpmData && (
+        {currentStage === 'quantitative' && cpmData && (
           <div className="space-y-8">
             {/* Cheatsheet */}
             {cpmData.key_takeaways?.cheatsheet && (
@@ -384,14 +446,14 @@ export default function CampaignAnalysisPage() {
         )}
 
         {/* No data at all message */}
-        {activeTab === 'qualitative' && !audienceData && (
+        {currentStage === 'qualitative' && !audienceData && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">No qualitative analysis data available</p>
             <p className="text-gray-400 text-sm mt-2">Click &quot;Run Analysis&quot; to generate analysis data</p>
           </div>
         )}
 
-        {activeTab === 'quantitative' && !cpmData && (
+        {currentStage === 'quantitative' && !cpmData && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">No quantitative analysis data available</p>
             <p className="text-gray-400 text-sm mt-2">Click &quot;Run Analysis&quot; to generate analysis data</p>
@@ -401,3 +463,32 @@ export default function CampaignAnalysisPage() {
     </div>
   );
 } 
+
+const Step = ({ title }: { title: string }) => {
+  return (
+    <li className="flex gap-2 items-start">
+      <CheckIcon />
+      <p className="text-black">{title}</p>
+    </li>
+  );
+};
+
+const CheckIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="h-4 w-4 text-[#FFA87D] mt-1 flex-shrink-0"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path
+        d="M12 2c-.218 0 -.432 .002 -.642 .005l-.616 .017l-.299 .013l-.579 .034l-.553 .046c-4.785 .464 -6.732 2.411 -7.196 7.196l-.046 .553l-.034 .579c-.005 .098 -.01 .198 -.013 .299l-.017 .616l-.004 .318l-.001 .324c0 .218 .002 .432 .005 .642l.017 .616l.013 .299l.034 .579l.046 .553c.464 4.785 2.411 6.732 7.196 7.196l.553 .046l.579 .034c.098 .005 .198 .01 .299 .013l.616 .017l.642 .005l.642 -.005l.616 -.017l.299 -.013l.579 -.034l.553 -.046c4.785 -.464 6.732 -2.411 7.196 -7.196l.046 -.553l.034 -.579c.005 -.098 .01 -.198 .013 -.299l.017 -.616l.005 -.642l-.005 -.642l-.017 -.616l-.013 -.299l-.034 -.579l-.046 -.553c-.464 -4.785 -2.411 -6.732 -7.196 -7.196l-.553 -.046l-.579 -.034a28.058 28.058 0 0 0 -.299 -.013l-.616 -.017l-.318 -.004l-.324 -.001zm2.293 7.293a1 1 0 0 1 1.497 1.32l-.083 .094l-4 4a1 1 0 0 1 -1.32 .083l-.094 -.083l-2 -2a1 1 0 0 1 1.32 -1.497l.094 .083l1.293 1.292l3.293 -3.292z"
+        fill="currentColor"
+        strokeWidth="0"
+      />
+    </svg>
+  );
+};
