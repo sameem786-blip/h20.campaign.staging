@@ -29,10 +29,8 @@
 .border-n000 { border-color: #FFFFFF; }
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
 
-
 @import "tailwindcss";
 @import "tw-animate-css";
-
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,8 +45,6 @@
 .active-state{
   color: #E3532C;
 }
-
-
 
 @theme inline {
   --color-background: var(--background);
@@ -186,6 +182,72 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes border-follow {
+  0% {
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  25% {
+    left: 100%;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    left: 100%;
+    top: 100%;
+    transform: translate(-50%, -50%);
+  }
+  75% {
+    left: 0;
+    top: 100%;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes color-change {
+  0% {
+    color: #1C1C1E;
+  }
+  25% {
+    color: #E3532C;
+  }
+  50% {
+    color: #FFA87D;
+  }
+  75% {
+    color: #FFF6F1;
+  }
+  100% {
+    color: #1C1C1E;
+  }
+}
+
+@keyframes border-color-change {
+  0% {
+    border-color: #1C1C1E;
+  }
+  25% {
+    border-color: #E3532C;
+  }
+  50% {
+    border-color: #FFA87D;
+  }
+  75% {
+    border-color: #FFF6F1;
+  }
+  100% {
+    border-color: #1C1C1E;
+  }
+}
+
+
 
 @layer base {
   @property --pos-x {

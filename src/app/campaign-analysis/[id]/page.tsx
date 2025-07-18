@@ -5,6 +5,26 @@ import { useParams } from 'next/navigation';
 import { GradientButton } from '@/components/ui/gradient-button';
 import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs2";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
+import { GridBackground } from "@/components/ui/glowing-card"
+import {
+  TableBody,
+  TableCell,
+  TableColumnHeader,
+  TableHead,
+  TableHeader,
+  TableHeaderGroup,
+  TableProvider,
+  TableRow,
+} from "@/components/ui/data-table";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+  subDays,
+  subMonths,
+} from "date-fns";
+import type { ColumnDef } from "@tanstack/react-table";
+import { ChevronRightIcon } from "lucide-react";
 
 // Types for the API responses - all fields are optional
 interface AudienceAnalysis {
@@ -325,22 +345,33 @@ export default function CampaignAnalysisPage() {
               <div className="max-w-6xl mx-auto">
                 <h2 className="text-2xl font-bold mb-6">Cheatsheet</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                  <div className="text-center">
-                    <div className="text-sm text-gray-600 mb-1">Low CPM</div>
-                    <div className="text-2xl font-bold">{formatCurrency(cpmData.key_takeaways.cheatsheet.low_cpm || 0)}</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm text-gray-600 mb-1">High CPM</div>
-                    <div className="text-2xl font-bold">{formatCurrency(cpmData.key_takeaways.cheatsheet.high_cpm || 0)}</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm text-gray-600 mb-1">Median CPM</div>
-                    <div className="text-2xl font-bold">{formatCurrency(cpmData.key_takeaways.cheatsheet.median_cpm || 0)}</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm text-gray-600 mb-1">Average CPM</div>
-                    <div className="text-2xl font-bold">{formatCurrency(cpmData.key_takeaways.cheatsheet.average_cpm || 0)}</div>
-                  </div>
+                  
+                  <GridBackground
+        title='Low CPM'
+        className=""
+        description={formatCurrency(cpmData.key_takeaways.cheatsheet.low_cpm || 0)}
+      />
+                  
+                  <GridBackground
+        title='High CPM'
+        className=""
+        description={formatCurrency(cpmData.key_takeaways.cheatsheet.high_cpm || 0)}
+      />
+                  
+                  <GridBackground
+        title='Median CPM'
+        className=""
+        description={formatCurrency(cpmData.key_takeaways.cheatsheet.median_cpm || 0)}
+      />
+                  
+                  <GridBackground
+        title='Average CPM'
+        className=""
+        description={formatCurrency(cpmData.key_takeaways.cheatsheet.average_cpm || 0)}
+      />
+                  
+                  
+                  
                 </div>
               </div>
             )}
@@ -352,50 +383,71 @@ export default function CampaignAnalysisPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   {/* Top Performers */}
                   {cpmData.key_takeaways.top_performers && cpmData.key_takeaways.top_performers.length > 0 && (
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <h4 className="font-semibold text-green-800 mb-3">Top Performers</h4>
-                      <div className="space-y-3">
-                        {cpmData.key_takeaways.top_performers.map((performer, index) => (
+                    <CardSpotlight color={"#BBF7D0"}className="h-96 w-96">
+      <p className="text-xl font-bold relative z-20 mt-2 text-green-800">
+        Top Performers
+      </p>
+      <div className="text-black mt-4 relative z-20">
+        <ul className="list-none  mt-2">
+          
+          {cpmData.key_takeaways.top_performers.map((performer, index) => (
                           <div key={index} className="text-sm">
-                            <div className="font-medium text-green-800">{performer?.creator || 'Unknown'}</div>
-                            <div className="text-green-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
-                            <div className="text-green-600 text-xs mt-1">{performer?.note || ''}</div>
-                          </div>
+                          <div className="font-medium text-green-800">{performer?.creator || 'Unknown'}</div>
+                         <div className="text-green-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
+                         <div className="text-green-600 text-xs mt-1">{performer?.note || ''}</div>
+                       </div>
                         ))}
-                      </div>
-                    </div>
+        </ul>
+      </div>
+      
+    </CardSpotlight>
+                    
                   )}
 
                   {/* Solid Value */}
                   {cpmData.key_takeaways.solid_value && cpmData.key_takeaways.solid_value.length > 0 && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <h4 className="font-semibold text-blue-800 mb-3">Solid Value</h4>
-                      <div className="space-y-3">
-                        {cpmData.key_takeaways.solid_value.map((performer, index) => (
+                    <CardSpotlight color={"#BFDBFE"}className="h-96 w-96">
+      <p className="text-xl font-bold relative z-20 mt-2 text-blue-800">
+        Solid Value
+      </p>
+      <div className="text-black mt-4 relative z-20">
+        <ul className="list-none  mt-2">
+          
+          {cpmData.key_takeaways.solid_value.map((performer, index) => (
                           <div key={index} className="text-sm">
                             <div className="font-medium text-blue-800">{performer?.creator || 'Unknown'}</div>
                             <div className="text-blue-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
                             <div className="text-blue-600 text-xs mt-1">{performer?.note || ''}</div>
                           </div>
                         ))}
-                      </div>
-                    </div>
+        </ul>
+      </div>
+      
+    </CardSpotlight>
+                    
                   )}
 
                   {/* Caution Zone */}
                   {cpmData.key_takeaways.caution_zone && cpmData.key_takeaways.caution_zone.length > 0 && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h4 className="font-semibold text-red-800 mb-3">Caution Zone</h4>
-                      <div className="space-y-3">
-                        {cpmData.key_takeaways.caution_zone.map((performer, index) => (
+                    <CardSpotlight color={"#d0516fff"}className="h-96 w-96">
+      <p className="text-xl font-bold relative z-20 mt-2 text-red-800">
+        Caution Zone
+      </p>
+      <div className="text-black mt-4 relative z-20">
+        <ul className="list-none  mt-2">
+          
+          {cpmData.key_takeaways.caution_zone.map((performer, index) => (
                           <div key={index} className="text-sm">
                             <div className="font-medium text-red-800">{performer?.creator || 'Unknown'}</div>
                             <div className="text-red-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
                             <div className="text-red-600 text-xs mt-1">{performer?.note || ''}</div>
                           </div>
                         ))}
-                      </div>
-                    </div>
+        </ul>
+      </div>
+      
+    </CardSpotlight>
+                    
                   )}
                 </div>
               </div>
