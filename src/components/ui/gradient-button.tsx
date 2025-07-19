@@ -11,7 +11,8 @@ const gradientButtonVariants = cva(
     "inline-flex items-center justify-center cursor-pointer",
     "rounded-[11px] min-w-[132px] px-3 py-2",
     "text-base leading-[19px] text-sm text-white",
-    "font-sans font-bold font-medium",
+    "font-bold", // Ensures weight: 700
+    "[font-family:var(--font-gt-america)]", // Use the GT America variable
     "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
     "disabled:pointer-events-none disabled:opacity-50",
   ],

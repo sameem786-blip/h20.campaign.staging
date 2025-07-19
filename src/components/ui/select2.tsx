@@ -33,6 +33,7 @@ const SelectValue = <T extends object>({ className, ...props }: AriaSelectValueP
     className={composeRenderProps(className, (className) =>
       cn(
         "line-clamp-1 data-[placeholder]:text-muted-foreground",
+        "[font-family:var(--font-gt-america)] font-medium",
         /* Description */
         "[&>[slot=description]]:hidden",
         className,
@@ -47,6 +48,7 @@ const SelectTrigger = ({ className, children, ...props }: AriaButtonProps) => (
     className={composeRenderProps(className, (className) =>
       cn(
         "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background",
+        "[font-family:var(--font-gt-america)] font-medium",
         /* Disabled */
         "data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
         /* Focused */
@@ -76,6 +78,7 @@ const SelectListBox = <T extends object>({ className, ...props }: AriaListBoxPro
     className={composeRenderProps(className, (className) =>
       cn(
         "max-h-[inherit] overflow-auto p-1 outline-none [clip-path:inset(0_0_0_0_round_calc(var(--radius)-2px))]",
+        "[font-family:var(--font-gt-america)] font-medium",
         className,
       ),
     )}

@@ -446,7 +446,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
           <div className="border rounded-lg shadow-sm bg-white w-full h-full flex flex-col">
             {/* Creator Header */}
             <div className="p-3 border-b">
-              <div className="font-medium text-lg color-n900">{creator.username}</div>
+              <div className="font-semibold [font-family:var(--font-gt-america)] color-n900">{creator.username}</div>
             </div>
 
             {/* Metrics Sections */}
@@ -455,36 +455,36 @@ export function CreatorCard({ creator }: CreatorCardProps) {
               <div className="p-3 border-t border-r">
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <div className="text-xs text-gray-500">Brand Fit</div>
+                    <div className="font-normal [font-family:var(--font-gt-america)] text-gray-500">Brand Fit</div>
                     <div className="font-medium text-sm">
                       <span
-                        className={`text-xs ${getBrandFitText().colorClass}`}
+                        className={`text-sm font-semibold [font-family:var(--font-gt-america)] ${getBrandFitText().colorClass}`}
                       >
                         {getBrandFitText().text}
                       </span>
                     </div>
                   </div>
                   <div className="flex justify-between">
-                    <div className="text-xs text-gray-500">Followers</div>
-                    <div className="font-medium text-sm">
+                    <div className="font-normal [font-family:var(--font-gt-america)] text-gray-500">Followers</div>
+                    <div className="text-sm font-semibold [font-family:var(--font-gt-america)]">
                       {formatNumber(creator.platform_info?.followers)}
                     </div>
                   </div>
                   <div className="flex justify-between">
-                    <div className="text-xs text-gray-500">Outlier Rate</div>
-                    <div className="font-medium text-sm text-red-500">
+                    <div className="font-normal [font-family:var(--font-gt-america)] text-gray-500">Outlier Rate</div>
+                    <div className="text-sm font-semibold [font-family:var(--font-gt-america)] text-red-500">
                       {getOutlierRate()}
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500">Rates</div>
+                    <div className="font-normal [font-family:var(--font-gt-america)] text-gray-500">Rates</div>
                     <div className="mt-3 max-h-32 overflow-y-auto space-y-2">
                       {ratesLoading ? (
                         <div className="flex justify-center py-4">
                           <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-blue-500"></div>
                         </div>
                       ) : rates.length === 0 ? (
-                        <div className="text-xs text-gray-500 py-2">
+                        <div className="text-xs font-normal [font-family:var(--font-gt-america)] text-gray-500 py-2">
                           No rates available
                         </div>
                       ) : (
@@ -513,26 +513,26 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                 <div className="mb-4">
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <div className="text-xs text-gray-500">Median Views</div>
-                      <div className="font-medium text-sm">
+                      <div className="text-xs font-normal [font-family:var(--font-gt-america)] text-gray-500">Median Views</div>
+                      <div className="font-semibold [font-family:var(--font-gt-america)] text-sm">
                         {formatNumber(videoSummary.median_views)}
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500">Mean Views</div>
-                      <div className="font-medium text-sm">
+                      <div className="text-xs font-normal [font-family:var(--font-gt-america)] text-gray-500">Mean Views</div>
+                      <div className="font-semibold [font-family:var(--font-gt-america)] text-sm">
                         {formatNumber(videoSummary.mean_views)}
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500">Most Viewed</div>
-                      <div className="font-medium text-sm">
+                      <div className="text-xs font-normal [font-family:var(--font-gt-america)] text-gray-500">Most Viewed</div>
+                      <div className="font-semibold [font-family:var(--font-gt-america)] text-sm">
                         {formatNumber(videoSummary.most_viewed)}
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500">Total Views</div>
-                      <div className="font-medium text-sm">
+                      <div className="text-xs font-normal [font-family:var(--font-gt-america)] text-gray-500">Total Views</div>
+                      <div className="font-semibold [font-family:var(--font-gt-america)] text-sm">
                         {formatNumber(videoSummary.total_views)}
                       </div>
                     </div>
@@ -564,8 +564,8 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                             (item: VideoDistributionItem, index: number) => (
                               <div key={index} className="space-y-1">
                                 <div className="flex justify-between text-xs">
-                                  <span>{item.range}</span>
-                                  <span>
+                                  <span className="font-normal [font-family:var(--font-gt-america)]">{item.range}</span>
+                                  <span className="font-medium [font-family:var(--font-gt-america)]">
                                     {item.count} ({item.percentage.toFixed(1)}%)
                                   </span>
                                 </div>
@@ -668,16 +668,20 @@ export function CreatorCard({ creator }: CreatorCardProps) {
   }`}
 >
                         <div className="flex justify-between mb-1">
-                          <span className="font-medium text-xs">
-                            {item.direction === "inbound"
-                              ? "Creator"
-                              : "Our Team"}
-                          </span>
-                          <span className="text-xs text-gray-500">
+                            {item.direction === "inbound" ? 
+                          (<span className="font-semibold text-xs">
+                              Creator
+                              
+                          </span>) : (<span className="font-medium text-xs">
+                              Our Team
+                              
+                          </span>)
+                          }
+                          <span className="font-light text-xs text-gray-500">
                             {formatDate(item.created_at)}
                           </span>
                         </div>
-                        <p className="text-xs text-gray-700">
+                        <p className="fotn-normal text-xs text-gray-700">
                           {item.negotiation_summary}
                         </p>
                       </div>

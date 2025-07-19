@@ -27,7 +27,7 @@
 .color-n000 { color: #FFFFFF; }
 .bg-n000 { background-color: #FFFFFF; }
 .border-n000 { border-color: #FFFFFF; }
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -35,7 +35,7 @@
 @custom-variant dark (&:is(.dark *));
 
 .playfair-font{
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-gt-america), sans-serif;
 }
 
 .headline-font {
