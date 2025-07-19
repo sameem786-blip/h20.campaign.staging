@@ -41,9 +41,7 @@ export const CanvasRevealEffect = ({
           center={["x", "y"]}
         />
       </div>
-      {showGradient && (
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 to-[84%]" />
-      )}
+      
     </div>
   );
 };
@@ -61,7 +59,7 @@ const DotMatrix: React.FC<DotMatrixProps> = ({
   colors = [[0, 0, 0]],
   opacities = [0.04, 0.04, 0.04, 0.04, 0.04, 0.08, 0.08, 0.08, 0.08, 0.14],
   totalSize = 4,
-  dotSize = 2,
+  dotSize = 1,
   shader = "",
   center = ["x", "y"],
 }) => {

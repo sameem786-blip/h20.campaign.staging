@@ -165,7 +165,7 @@ export default function CampaignAnalysisPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white playfair-font">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -219,12 +219,12 @@ export default function CampaignAnalysisPage() {
               <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-6">
                   <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                    Micro Personas
+                    Personas
                   </span>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {audienceData.micro_segments.map((segment, index) => (
+                  {audienceData.micro_segments.slice(0, 3).map((segment, index) => (
                     <CardSpotlight key={index} className="h-96 w-96">
       <p className="text-xl font-bold relative z-20 mt-2 text-black">
         {segment?.segment || 'Unknown Segment'}
@@ -247,18 +247,14 @@ export default function CampaignAnalysisPage() {
             )}
 
 <div className="max-w-6xl mx-auto">
+  <div className="text-center mb-6">
+                  <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                    Network Breakdown
+                  </span>
+                </div>
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
                     <CardSpotlight className="">
-                      {audienceData.network_cheatsheet?.rate_bands && (
-                        <>
-                          <p className="text-xl font-bold relative z-20 mt-2 text-black">
-                            Rate Bands
-                          </p>
-                          <div className="text-black mt-4 relative z-20">
-                            {audienceData.network_cheatsheet.rate_bands}
-                          </div>
-                        </>
-                      )}
+                      
                       {audienceData.network_cheatsheet?.network_breakdown && (
                         <>
                           <p className="text-xl font-bold relative z-20 mt-2 text-black">
@@ -347,27 +343,27 @@ export default function CampaignAnalysisPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                   
                   <GridBackground
-        title='Low CPM'
+        title={formatCurrency(cpmData.key_takeaways.cheatsheet.low_cpm || 0)}
         className=""
-        description={formatCurrency(cpmData.key_takeaways.cheatsheet.low_cpm || 0)}
+        description="Low CPM"
       />
                   
                   <GridBackground
-        title='High CPM'
+        title={formatCurrency(cpmData.key_takeaways.cheatsheet.high_cpm || 0)}
         className=""
-        description={formatCurrency(cpmData.key_takeaways.cheatsheet.high_cpm || 0)}
+        description="High CPM"
       />
                   
                   <GridBackground
-        title='Median CPM'
+        title={formatCurrency(cpmData.key_takeaways.cheatsheet.median_cpm || 0)}
         className=""
-        description={formatCurrency(cpmData.key_takeaways.cheatsheet.median_cpm || 0)}
+        description="Median CPM"
       />
                   
                   <GridBackground
-        title='Average CPM'
+        title={formatCurrency(cpmData.key_takeaways.cheatsheet.average_cpm || 0)}
         className=""
-        description={formatCurrency(cpmData.key_takeaways.cheatsheet.average_cpm || 0)}
+        description="Average CPM"
       />
                   
                   
@@ -388,13 +384,13 @@ export default function CampaignAnalysisPage() {
         Top Performers
       </p>
       <div className="text-black mt-4 relative z-20">
-        <ul className="list-none  mt-2">
+        <ul className="list-none  mt-2 flex flex-col gap-2">
           
           {cpmData.key_takeaways.top_performers.map((performer, index) => (
-                          <div key={index} className="text-sm">
-                          <div className="font-medium text-green-800">{performer?.creator || 'Unknown'}</div>
-                         <div className="text-green-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
-                         <div className="text-green-600 text-xs mt-1">{performer?.note || ''}</div>
+                          <div key={index} className="">
+                         <div className="font-medium text-green-800 text-lg mt-1">{performer?.note || ''}</div>
+                          <div className="font-normal text-green-700 text-md">{performer?.creator || 'Unknown'}</div>
+                         <div className="font-normal text-md text-green-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
                        </div>
                         ))}
         </ul>
@@ -411,13 +407,13 @@ export default function CampaignAnalysisPage() {
         Solid Value
       </p>
       <div className="text-black mt-4 relative z-20">
-        <ul className="list-none  mt-2">
+        <ul className="list-none mt-2 flex flex-col gap-2">
           
           {cpmData.key_takeaways.solid_value.map((performer, index) => (
-                          <div key={index} className="text-sm">
-                            <div className="font-medium text-blue-800">{performer?.creator || 'Unknown'}</div>
-                            <div className="text-blue-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
-                            <div className="text-blue-600 text-xs mt-1">{performer?.note || ''}</div>
+                          <div key={index} className="">
+                            <div className="font-medium text-blue-800 text-lg mt-1">{performer?.note || ''}</div>
+                            <div className="font-normal text-blue-700 text-md">{performer?.creator || 'Unknown'}</div>
+                            <div className="font-normal text-blue-700 text-md">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
                           </div>
                         ))}
         </ul>
@@ -434,13 +430,13 @@ export default function CampaignAnalysisPage() {
         Caution Zone
       </p>
       <div className="text-black mt-4 relative z-20">
-        <ul className="list-none  mt-2">
+        <ul className="list-none mt-2 flex flex-col gap-2">
           
           {cpmData.key_takeaways.caution_zone.map((performer, index) => (
-                          <div key={index} className="text-sm">
-                            <div className="font-medium text-red-800">{performer?.creator || 'Unknown'}</div>
-                            <div className="text-red-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
-                            <div className="text-red-600 text-xs mt-1">{performer?.note || ''}</div>
+                          <div key={index} className="">
+                            <div className="font-medium text-lg text-red-800 mt-1">{performer?.note || ''}</div>
+                            <div className="font-normal text-red-700 text-md">{performer?.creator || 'Unknown'}</div>
+                            <div className="font-normal text-red-700 text-md">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
                           </div>
                         ))}
         </ul>
@@ -467,7 +463,6 @@ export default function CampaignAnalysisPage() {
                         <th className="border border-gray-200 px-4 py-2 text-left">CPM (USD)</th>
                         <th className="border border-gray-200 px-4 py-2 text-left">Mean Views</th>
                         <th className="border border-gray-200 px-4 py-2 text-left">Brand Fit</th>
-                        <th className="border border-gray-200 px-4 py-2 text-left">Outlier Rate %</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -479,7 +474,6 @@ export default function CampaignAnalysisPage() {
                           <td className="border border-gray-200 px-4 py-2">{formatCurrency(creator?.cpm_usd || 0)}</td>
                           <td className="border border-gray-200 px-4 py-2">{formatNumber(creator?.mean_views || 0)}</td>
                           <td className="border border-gray-200 px-4 py-2">{creator?.brand_fit || '-'}</td>
-                          <td className="border border-gray-200 px-4 py-2">{creator?.outlier_rate_pct || 0}%</td>
                         </tr>
                       ))}
                     </tbody>

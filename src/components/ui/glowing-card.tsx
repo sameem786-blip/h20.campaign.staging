@@ -31,7 +31,7 @@ export function GridBackground({
         backgroundSize: '20px 20px'
       }}
     >
-      <div 
+      {/* <div 
         className="w-3 h-3 rounded-full absolute shadow-[0_0_15px] shadow-current z-10 bg-current"
         style={{
           animation: `
@@ -39,7 +39,7 @@ export function GridBackground({
             color-change 6s linear infinite
           `
         }}
-      />
+      /> */}
       <div 
         className="absolute inset-0 border-2 rounded-md"
         style={{
@@ -50,7 +50,9 @@ export function GridBackground({
       <div className="relative z-20 text-center max-w-7xl">
         <h1 className='text-2xl font-bold'>{title}</h1>
         {description && (
-          <p className='text-md mt-3 text-gray-300'>{description}</p>
+          <p className='text-md mt-3 text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis'>
+  {description}
+</p>
         )}
 
         
