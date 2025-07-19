@@ -6,6 +6,7 @@ import { GradientButton } from '@/components/ui/gradient-button';
 import { Tabs, TabList, Tab, TabPanel } from "@/components/ui/tabs2";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { GridBackground } from "@/components/ui/glowing-card"
+import { Component } from "@/components/ui/animate-sparkle-toggle-with-magical-effects";
 import {
   TableBody,
   TableCell,
@@ -168,35 +169,34 @@ export default function CampaignAnalysisPage() {
     <div className="min-h-screen bg-white playfair-font">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Tabs
-  selectedKey={currentStage}
-  onSelectionChange={(key) => onStageClick(key as 'qualitative' | 'quantitative')}
->
-  <TabList className="flex h-12 w-full items-center justify-between rounded-lg bg-gray-100 p-1 text-gray-500 gap-0.5">
-    {timelineStages.map((stage) => (
-      <Tab
-        key={stage.value}
-        id={stage.value}
-        className="flex-1 inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md px-2 py-2 text-xs font-medium ring-offset-background transition-all hover:bg-white/80 hover:z-10 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-[#FFA87D] data-[selected]:text-[#1C1C1E] data-[selected]:shadow-sm data-[selected]:z-20"
-      >
-        <span className="truncate">{stage.label}</span>
-        <span className="ml-1 rounded-full bg-gray-200 px-1.5 py-0.5 text-xs font-medium data-[selected]:bg-gray-100 flex-shrink-0 text-[#FF9A63]">
-          {stage.count}
-        </span>
-      </Tab>
-    ))}
-  </TabList>
-</Tabs>
+        <div className="relative w-full h-16 flex items-center">
+  {/* Centered Toggle Row */}
+  <div className="absolute inset-0 flex justify-center items-center">
+    <div className="flex flex-row items-center gap-8">
+      <span className="text-gray-700 font-medium">Quantitative</span>
+      <div className='h-5 w-8 flex items-center justify-center border border-md border-red-500 rounded-full bg-white shadow'>
+        <div className='scale-50'>
+          <Component
+            checked={currentStage === 'quantitative'}
+            onToggle={(checked) => setCurrentStage(checked ? 'quantitative' : 'qualitative')}
+          />
+        </div>
+      </div>
+      <span className="text-gray-700 font-medium">Qualitative</span>
+    </div>
+  </div>
 
-          
-          <GradientButton
+  {/* Run Analysis Button aligned right */}
+  <div className="ml-auto pr-4">
+    <GradientButton
             className="gradient-button"
             onClick={fetchAnalysisData}
           >
             Run Analysis
           </GradientButton>
-        </div>
+  </div>
+</div>
+
       </div>
 
       <div className="px-6 py-6">
@@ -218,7 +218,7 @@ export default function CampaignAnalysisPage() {
             {audienceData.micro_segments && audienceData.micro_segments.length > 0 && (
               <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-6">
-                  <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                  <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm cursor-default">
                     Personas
                   </span>
                 </div>
@@ -226,10 +226,10 @@ export default function CampaignAnalysisPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {audienceData.micro_segments.slice(0, 3).map((segment, index) => (
                     <CardSpotlight key={index} className="h-96 w-96">
-      <p className="text-xl font-bold relative z-20 mt-2 text-black">
+      <p className="text-xl font-bold relative z-20 mt-2 text-black cursor-default">
         {segment?.segment || 'Unknown Segment'}
       </p>
-      <div className="text-black mt-4 relative z-20">
+      <div className="text-black mt-4 relative z-20 cursor-default">
         {segment?.views_pool_share_percent || 0}% Views Pool Share
         <ul className="list-none  mt-2">
           
@@ -248,7 +248,7 @@ export default function CampaignAnalysisPage() {
 
 <div className="max-w-6xl mx-auto">
   <div className="text-center mb-6">
-                  <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                  <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm cursor-default">
                     Network Breakdown
                   </span>
                 </div>
@@ -257,26 +257,26 @@ export default function CampaignAnalysisPage() {
                       
                       {audienceData.network_cheatsheet?.network_breakdown && (
                         <>
-                          <p className="text-xl font-bold relative z-20 mt-2 text-black">
+                          <p className="text-xl font-bold relative z-20 mt-2 text-black cursor-default">
                             Deliverable Breakdown
                           </p>
                           <div className="text-black mt-4 relative z-20">
                             <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Step title="Instagram Only:" />
-                    <span className="font-medium">{audienceData.network_cheatsheet.network_breakdown.instagram_only || 0}</span>
+                    <span className="font-medium cursor-default">{audienceData.network_cheatsheet.network_breakdown.instagram_only || 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <Step title="Cross Post Bundles:" />
-                    <span className="font-medium">{audienceData.network_cheatsheet.network_breakdown.cross_post_bundles || 0}</span>
+                    <span className="font-medium cursor-default">{audienceData.network_cheatsheet.network_breakdown.cross_post_bundles || 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <Step title="Tiktok Only:" />
-                    <span className="font-medium">{audienceData.network_cheatsheet.network_breakdown.tiktok_only || 0}</span>
+                    <span className="font-medium cursor-default">{audienceData.network_cheatsheet.network_breakdown.tiktok_only || 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <Step title="Youtube Only:" />
-                    <span className="font-medium">{audienceData.network_cheatsheet.network_breakdown.youtube_only || 0}</span>
+                    <span className="font-medium cursor-default">{audienceData.network_cheatsheet.network_breakdown.youtube_only || 0}</span>
                   </div>
                 </div>
                           </div>
@@ -328,7 +328,7 @@ export default function CampaignAnalysisPage() {
             {/* No Data Message */}
             {!audienceData.macro_persona && (!audienceData.micro_segments || audienceData.micro_segments.length === 0) && !audienceData.network_cheatsheet && (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No qualitative analysis data available</p>
+                <p className="text-gray-500 text-lg cursor-default">No qualitative analysis data available</p>
               </div>
             )}
           </div>
@@ -339,30 +339,30 @@ export default function CampaignAnalysisPage() {
             {/* Cheatsheet */}
             {cpmData.key_takeaways?.cheatsheet && (
               <div className="max-w-6xl mx-auto">
-                <h2 className="text-2xl font-bold mb-6">Cheatsheet</h2>
+                <h2 className="text-2xl font-bold mb-6 cursor-default">Cheatsheet</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                   
                   <GridBackground
         title={formatCurrency(cpmData.key_takeaways.cheatsheet.low_cpm || 0)}
-        className=""
+        className="cursor-default"
         description="Low CPM"
       />
                   
                   <GridBackground
         title={formatCurrency(cpmData.key_takeaways.cheatsheet.high_cpm || 0)}
-        className=""
+        className="cursor-default"
         description="High CPM"
       />
                   
                   <GridBackground
         title={formatCurrency(cpmData.key_takeaways.cheatsheet.median_cpm || 0)}
-        className=""
+        className="cursor-default"
         description="Median CPM"
       />
                   
                   <GridBackground
         title={formatCurrency(cpmData.key_takeaways.cheatsheet.average_cpm || 0)}
-        className=""
+        className="cursor-default"
         description="Average CPM"
       />
                   
@@ -375,12 +375,12 @@ export default function CampaignAnalysisPage() {
             {/* Key Takeaways */}
             {cpmData.key_takeaways && (
               <div className="max-w-6xl mx-auto">
-                <h3 className="text-xl font-bold mb-6">Key Takeaways</h3>
+                <h3 className="text-xl font-bold mb-6 cursor-default">Key Takeaways</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   {/* Top Performers */}
                   {cpmData.key_takeaways.top_performers && cpmData.key_takeaways.top_performers.length > 0 && (
                     <CardSpotlight color={"#BBF7D0"}className="h-96 w-96">
-      <p className="text-xl font-bold relative z-20 mt-2 text-green-800">
+      <p className="text-xl font-bold relative z-20 mt-2 text-green-800 cursor-default">
         Top Performers
       </p>
       <div className="text-black mt-4 relative z-20">
@@ -388,9 +388,9 @@ export default function CampaignAnalysisPage() {
           
           {cpmData.key_takeaways.top_performers.map((performer, index) => (
                           <div key={index} className="">
-                         <div className="font-medium text-green-800 text-lg mt-1">{performer?.note || ''}</div>
-                          <div className="font-normal text-green-700 text-md">{performer?.creator || 'Unknown'}</div>
-                         <div className="font-normal text-md text-green-700">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
+                         <div className="font-medium text-green-800 text-lg mt-1 cursor-default">{performer?.note || ''}</div>
+                          <div className="font-normal text-green-700 text-md cursor-default">{performer?.creator || 'Unknown'}</div>
+                         <div className="font-normal text-md text-green-700 cursor-default">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
                        </div>
                         ))}
         </ul>
@@ -403,7 +403,7 @@ export default function CampaignAnalysisPage() {
                   {/* Solid Value */}
                   {cpmData.key_takeaways.solid_value && cpmData.key_takeaways.solid_value.length > 0 && (
                     <CardSpotlight color={"#BFDBFE"}className="h-96 w-96">
-      <p className="text-xl font-bold relative z-20 mt-2 text-blue-800">
+      <p className="text-xl font-bold relative z-20 mt-2 text-blue-800 cursor-default">
         Solid Value
       </p>
       <div className="text-black mt-4 relative z-20">
@@ -411,9 +411,9 @@ export default function CampaignAnalysisPage() {
           
           {cpmData.key_takeaways.solid_value.map((performer, index) => (
                           <div key={index} className="">
-                            <div className="font-medium text-blue-800 text-lg mt-1">{performer?.note || ''}</div>
-                            <div className="font-normal text-blue-700 text-md">{performer?.creator || 'Unknown'}</div>
-                            <div className="font-normal text-blue-700 text-md">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
+                            <div className="font-medium text-blue-800 text-lg mt-1 cursor-default">{performer?.note || ''}</div>
+                            <div className="font-normal text-blue-700 text-md cursor-default">{performer?.creator || 'Unknown'}</div>
+                            <div className="font-normal text-blue-700 text-md cursor-default">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
                           </div>
                         ))}
         </ul>
@@ -426,7 +426,7 @@ export default function CampaignAnalysisPage() {
                   {/* Caution Zone */}
                   {cpmData.key_takeaways.caution_zone && cpmData.key_takeaways.caution_zone.length > 0 && (
                     <CardSpotlight color={"#d0516fff"}className="h-96 w-96">
-      <p className="text-xl font-bold relative z-20 mt-2 text-red-800">
+      <p className="text-xl font-bold relative z-20 mt-2 text-red-800 cursor-default">
         Caution Zone
       </p>
       <div className="text-black mt-4 relative z-20">
@@ -434,9 +434,9 @@ export default function CampaignAnalysisPage() {
           
           {cpmData.key_takeaways.caution_zone.map((performer, index) => (
                           <div key={index} className="">
-                            <div className="font-medium text-lg text-red-800 mt-1">{performer?.note || ''}</div>
-                            <div className="font-normal text-red-700 text-md">{performer?.creator || 'Unknown'}</div>
-                            <div className="font-normal text-red-700 text-md">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
+                            <div className="font-medium text-lg text-red-800 mt-1 cursor-default">{performer?.note || ''}</div>
+                            <div className="font-normal text-red-700 text-md cursor-default">{performer?.creator || 'Unknown'}</div>
+                            <div className="font-normal text-red-700 text-md cursor-default">CPM: {formatCurrency(performer?.cpm_usd || 0)}</div>
                           </div>
                         ))}
         </ul>
@@ -452,28 +452,28 @@ export default function CampaignAnalysisPage() {
             {/* Creator Performance Table */}
             {cpmData.table && cpmData.table.length > 0 && (
               <div className="max-w-6xl mx-auto">
-                <h3 className="text-xl font-bold mb-6">Creator Performance</h3>
+                <h3 className="text-xl font-bold mb-6 cursor-default">Creator Performance</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse border border-gray-200">
                     <thead>
                       <tr className="bg-gray-50">
-                        <th className="border border-gray-200 px-4 py-2 text-left">Rank</th>
-                        <th className="border border-gray-200 px-4 py-2 text-left">Handle</th>
-                        <th className="border border-gray-200 px-4 py-2 text-left">Rate (USD)</th>
-                        <th className="border border-gray-200 px-4 py-2 text-left">CPM (USD)</th>
-                        <th className="border border-gray-200 px-4 py-2 text-left">Mean Views</th>
-                        <th className="border border-gray-200 px-4 py-2 text-left">Brand Fit</th>
+                        <th className="border border-gray-200 px-4 py-2 text-left cursor-default">Rank</th>
+                        <th className="border border-gray-200 px-4 py-2 text-left cursor-default">Handle</th>
+                        <th className="border border-gray-200 px-4 py-2 text-left cursor-default">Rate (USD)</th>
+                        <th className="border border-gray-200 px-4 py-2 text-left cursor-default">CPM (USD)</th>
+                        <th className="border border-gray-200 px-4 py-2 text-left cursor-default">Mean Views</th>
+                        <th className="border border-gray-200 px-4 py-2 text-left cursor-default">Brand Fit</th>
                       </tr>
                     </thead>
                     <tbody>
                       {cpmData.table.map((creator, index) => (
                         <tr key={creator?.rank || index} className="hover:bg-gray-50">
-                          <td className="border border-gray-200 px-4 py-2">{creator?.rank || '-'}</td>
-                          <td className="border border-gray-200 px-4 py-2 font-medium">{creator?.handle || 'Unknown'}</td>
-                          <td className="border border-gray-200 px-4 py-2">${creator?.rate_usd || 0}</td>
-                          <td className="border border-gray-200 px-4 py-2">{formatCurrency(creator?.cpm_usd || 0)}</td>
-                          <td className="border border-gray-200 px-4 py-2">{formatNumber(creator?.mean_views || 0)}</td>
-                          <td className="border border-gray-200 px-4 py-2">{creator?.brand_fit || '-'}</td>
+                          <td className="border border-gray-200 px-4 py-2 cursor-default">{creator?.rank || '-'}</td>
+                          <td className="border border-gray-200 px-4 py-2 cursor-default font-medium">{creator?.handle || 'Unknown'}</td>
+                          <td className="border border-gray-200 px-4 py-2 cursor-default">${creator?.rate_usd || 0}</td>
+                          <td className="border border-gray-200 px-4 py-2 cursor-default">{formatCurrency(creator?.cpm_usd || 0)}</td>
+                          <td className="border border-gray-200 px-4 py-2 cursor-default">{formatNumber(creator?.mean_views || 0)}</td>
+                          <td className="border border-gray-200 px-4 py-2 cursor-default">{creator?.brand_fit || '-'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -494,15 +494,15 @@ export default function CampaignAnalysisPage() {
         {/* No data at all message */}
         {currentStage === 'qualitative' && !audienceData && (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No qualitative analysis data available</p>
-            <p className="text-gray-400 text-sm mt-2">Click &quot;Run Analysis&quot; to generate analysis data</p>
+            <p className="text-gray-500 text-lg cursor-default">No qualitative analysis data available</p>
+            <p className="text-gray-400 text-sm mt-2 cursor-default">Click &quot;Run Analysis&quot; to generate analysis data</p>
           </div>
         )}
 
         {currentStage === 'quantitative' && !cpmData && (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No quantitative analysis data available</p>
-            <p className="text-gray-400 text-sm mt-2">Click &quot;Run Analysis&quot; to generate analysis data</p>
+            <p className="text-gray-500 text-lg cursor-default">No quantitative analysis data available</p>
+            <p className="text-gray-400 text-sm mt-2 cursor-default">Click &quot;Run Analysis&quot; to generate analysis data</p>
           </div>
         )}
       </div>
@@ -514,7 +514,7 @@ const Step = ({ title }: { title: string }) => {
   return (
     <li className="flex gap-2 items-start">
       <CheckIcon />
-      <p className="text-black">{title}</p>
+      <p className="text-black cursor-default">{title}</p>
     </li>
   );
 };
@@ -527,7 +527,7 @@ const CheckIcon = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="h-4 w-4 text-[#FFA87D] mt-1 flex-shrink-0"
+      className="h-4 w-4 text-[#FFA87D] mt-1 flex-shrink-0 cursor-default"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path
