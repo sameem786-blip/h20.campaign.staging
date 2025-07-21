@@ -8,6 +8,7 @@ import { Conversation, ConversationFilters } from '@/types/conversation';
 // UI Components
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Badge2, BadgeVariant } from '@/components/ui/badge2';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
   Table, 
@@ -25,11 +26,12 @@ import {
 } from '@/components/ui/card';
 import {
   Select,
-  SelectContent,
   SelectItem,
+  SelectListBox,
+  SelectPopover,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/select2";
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -45,6 +47,18 @@ const stageColors: Record<string, string> = {
   'content_posted': 'bg-emerald-100 text-emerald-800',
   'pass': 'bg-gray-100 text-gray-800',
   'none': 'bg-slate-100 text-slate-800',
+};
+
+const tagColorMap: Record<string, { base: string; subtle: string }> = {
+  notify: { base: 'red', subtle: 'red-subtle' },
+  question: { base: 'teal', subtle: 'teal-subtle' },
+  review: { base: 'amber', subtle: 'amber-subtle' },
+  unknown: { base: 'green', subtle: 'green-subtle' },
+  creative: { base: 'purple', subtle: 'purple-subtle' },
+  contract: { base: 'amber', subtle: 'amber-subtle' },
+  qa: { base: 'blue', subtle: 'blue-subtle' },
+  // fallback
+  default: { base: 'gray', subtle: 'gray-subtle' },
 };
 
 // Define Campaign interface
@@ -203,86 +217,122 @@ export default function ConversationsPage() {
   if (error) return <div className="text-red-500 p-8">{error}</div>;
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto py-6 space-y-6 px-2 playfair-font">
       <h1 className="text-3xl font-bold">Conversations</h1>
       
       {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Filters</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <label htmlFor="search" className="text-sm font-medium">Search</label>
-              <Input
-                id="search"
-                placeholder="Search campaign, smartlead campaign or creator..."
-                value={filters.search}
-                onChange={(e) => updateFilter('search', e.target.value)}
-              />
-            </div>
+      <Card className="shadow-md border border-gray-200">
+  <CardHeader>
+    <CardTitle className="text-lg font-semibold text-n900">Filters</CardTitle>
+  </CardHeader>
+
+  <CardContent className="space-y-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-6">
+      {/* Search */}
+      <div className="space-y-2">
+        <label htmlFor="search" className="text-sm font-medium text-gray-700">
+          Search
+        </label>
+        <Input
+          id="search"
+          placeholder="Search campaign, smartlead campaign or creator..."
+          value={filters.search}
+          onChange={(e) => updateFilter("search", e.target.value)}
+        />
+      </div>
+
+      {/* Campaign & Checkboxes */}
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">Campaign</label>
+          
+
+  ....
+  <Select
+            selectedKey={filters.campaignId?.toString() || "all"}
+            onSelectionChange={(key) => {
+              if (key === "all") return updateFilter("campaignId", null);
+      const selected = campaigns.find((c) => c.id.toString() === key);
+      if (selected) updateFilter("campaignId", selected.id);
+            }}
+          >
+            <SelectTrigger
+      className="w-full"
+      style={{ minWidth: "260px", maxWidth: "340px" }}
+    >
+      <SelectValue />
+    </SelectTrigger>
+    <SelectPopover>
+      <SelectListBox>
+        <SelectItem key="all" id="all">
+          All Campaigns
+        </SelectItem>
+        {campaigns.map((campaign) => (
+          <SelectItem key={campaign.id.toString()} id={campaign.id.toString()}>
+            {campaign.name}
+          </SelectItem>
+        ))}
+      </SelectListBox>
+    </SelectPopover>
+          </Select>
+        </div>
+
+        <fieldset className="space-y-2">
+          <div className="flex items-center space-x-2">
             
-            <div className="space-y-2">
-              <label className="text-sm font-medium w-full">Campaign</label>
-              <Select
-                onValueChange={(value) => updateFilter('campaignId', value === "all" ? null : parseInt(value))}
-                value={filters.campaignId?.toString() || "all"}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a campaign" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Campaigns</SelectItem>
-                  {campaigns.map((campaign) => (
-                    <SelectItem key={campaign.id} value={campaign.id.toString()}>
-                      {campaign.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              
-              <div className="flex items-center space-x-2 mt-2">
-                <Checkbox 
-                  id="followUpNeeded" 
-                  checked={filters.followUpNeeded}
-                  onCheckedChange={(checked) => updateFilter('followUpNeeded', checked)}
-                />
-                <label htmlFor="followUpNeeded" className="text-sm">
-                  Follow-up Needed
-                </label>
-              </div>
-              
-              <div className="flex items-center space-x-2 mt-2">
-                <Checkbox 
-                  id="notApproved" 
-                  checked={filters.notApproved}
-                  onCheckedChange={(checked) => updateFilter('notApproved', checked)}
-                />
-                <label htmlFor="notApproved" className="text-sm">
-                  Not Approved
-                </label>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Tags</label>
-              <div className="flex flex-wrap gap-2">
-                {availableTags.map(tag => (
-                  <Badge 
-                    key={tag}
-                    variant={filters.tags.includes(tag) ? "default" : "outline"}
-                    className="cursor-pointer"
-                    onClick={() => handleTagSelect(tag)}
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </div>
+            <Checkbox
+              id="followUpNeeded"
+              checked={filters.followUpNeeded}
+              onCheckedChange={(checked) => updateFilter("followUpNeeded", checked)}
+            />
+            <label htmlFor="followUpNeeded" className="text-sm text-gray-700">
+              Follow-up Needed
+            </label>
           </div>
-        </CardContent>
-      </Card>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="notApproved"
+              checked={filters.notApproved}
+              onCheckedChange={(checked) => updateFilter("notApproved", checked)}
+            />
+            <label htmlFor="notApproved" className="text-sm text-gray-700">
+              Not Approved
+            </label>
+          </div>
+        </fieldset>
+      </div>
+
+      {/* Tags */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">Tags</label>
+        <div className="flex flex-wrap gap-2">
+  {availableTags.map((tag) => {
+    const color = tagColorMap[tag] || tagColorMap.default;
+    const isSelected = filters.tags.includes(tag);
+    return (
+      <Badge2
+        key={tag}
+        variant={(isSelected ? color.base : color.subtle) as BadgeVariant}
+        onClick={() => handleTagSelect(tag)}
+      >
+        {tag}
+      </Badge2>
+    );
+  })}
+</div>
+      </div>
+    </div>
+
+    {/* Optional: Reset Button */}
+    {/* <div className="flex justify-end">
+      <Button variant="ghost" size="sm" onClick={resetFilters}>
+        Reset Filters
+      </Button>
+    </div> */}
+  </CardContent>
+</Card>
+
       
       {/* Results */}
       <div className="rounded-md border">
@@ -331,12 +381,20 @@ export default function ConversationsPage() {
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
-                      {conversation.last_message_tags?.map(tag => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      )) || '-'}
-                    </div>
+  {conversation.last_message_tags?.map((tag) => {
+    const color = tagColorMap[tag] || tagColorMap.default;
+    const isSelected = filters.tags.includes(tag);
+    return (
+      <Badge2
+        key={tag}
+        variant={(isSelected ? color.base : color.subtle) as BadgeVariant}
+      >
+        {tag}
+      </Badge2>
+    );
+  }) || '-'}
+</div>
+
                   </TableCell>
                   <TableCell>
                     {conversation.last_message_follow_up_needed ? (

@@ -14,6 +14,8 @@ import {
 } from "react-icons/md";
 import BuilderCard from "./BuilderCard";
 import { LabeledInput, LabeledTextarea, LabeledTag } from "./LabeledFields";
+import { GradientButton } from "../ui/gradient-button";
+import { Badge2 } from "../ui/badge2";
 
 type Message = {
   text: string;
@@ -268,7 +270,7 @@ export default function Playground() {
   };
 
   return (
-    <div className="flex flex-row h-[calc(100vh-82px)] fixed w-full bg-[#f7f8fa]">
+    <div className="flex flex-row h-[calc(100vh-82px)] fixed w-full bg-[#f7f8fa] playfair-font">
       {/* Chat Section */}
       <div className="flex flex-col !w-[370px] md:!w-[470px] max-w-full border-r border-gray-200 bg-white">
         {/* Header */}
@@ -320,12 +322,13 @@ export default function Playground() {
         {/* Fixed Header */}
         <div className="flex items-center justify-between p-8 border-b border-gray-100 bg-white flex-shrink-0">
           <h1 className="text-3xl font-bold">New Campaign Builder</h1>
-              <button
-            className="bg-black text-white px-6 py-2 rounded-lg font-medium flex items-center gap-2 text-lg"
-                type="button"
-              >
-            <span className="text-2xl">+</span> Start Research
-          </button>
+          <GradientButton
+            className="gradient-button"
+            onClick={() => {}}
+          >
+            + Start Research
+          </GradientButton>
+              
         </div>
         {/* Scrollable Content */}
         <div className="flex-1 min-h-0 overflow-y-auto p-8 space-y-8">
@@ -513,13 +516,14 @@ export default function Playground() {
       ? builderData.countries
       : []
     ).map((country) => (
-      <span
-        key={country}
-        className="bg-gray-100 px-4 py-1 rounded-lg text-base font-semibold flex items-center"
+      <Badge2
+      key={country}
+              variant="turbo"
+              onClick={() =>{}}
       >
-        {country}
-        <span className="ml-1 text-gray-400 font-normal">×</span>
-      </span>
+{country}
+      </Badge2>
+      
     ))}
   </div>
            </BuilderCard>
@@ -544,14 +548,27 @@ export default function Playground() {
   }
 >
   {builderData.interests ? (
-    <span className="inline-flex items-center gap-2 bg-gray-100 px-4 py-1 rounded-lg text-base font-semibold">
-      <MdFavorite className="w-5 h-5 text-pink-400" />
-      {builderData.interests}
-      <span className="ml-1 text-gray-400 font-normal">×</span>
-    </span>
-  ) : (
-    <span className="text-gray-400 italic">Tap to add…</span>
-  )}
+  <div className="flex flex-wrap gap-2">
+    {builderData.interests
+      .split(",")
+      .map((interest) => interest.trim())
+      .filter(Boolean)
+      .map((interest) => (
+        <Badge2
+      key={interest}
+              variant="turbo"
+              onClick={() =>{}}
+      >
+        <MdFavorite className="w-5 h-5 text-red-600" />
+{interest}
+      </Badge2>
+        
+      ))}
+  </div>
+) : (
+  <span className="text-gray-400 italic">Tap to add…</span>
+)}
+
            </BuilderCard>
 
           {/* Networks */}
@@ -616,12 +633,13 @@ export default function Playground() {
     {builderData.networks
       .filter(n => n !== "All")
       .map(network => (
-        <span
-          key={network}
-          className="bg-gray-100 px-6 py-2 rounded-lg text-base font-semibold"
-        >
-          {network}
-        </span>
+        <Badge2
+      key={network}
+              variant="turbo"
+              onClick={() =>{}}
+      >
+{network}
+      </Badge2>
       ))}
   </div>
             </BuilderCard>

@@ -5,6 +5,8 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line
 } from "recharts";
 import { MdGridView, MdAlternateEmail, MdCalendarToday, MdVideocam } from "react-icons/md";
+import { GridBackground } from "./ui/glowing-card";
+import { CardSpotlight } from "./ui/card-spotlight";
 
 const stats = [
   { label: "Published Videos", value: "27" },
@@ -301,33 +303,50 @@ export default function Performance() {
         {/* Stat Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           {stats.slice(0, 4).map((stat) => (
-            <div key={stat.label} className="bg-white rounded-xl p-6 flex flex-col justify-between shadow-sm">
-              <span className="text-gray-500 text-sm mb-2">{stat.label}</span>
-              <span className="text-3xl font-bold text-gray-900">{stat.value}</span>
-            </div>
+            <GridBackground
+                    title={stat.value}
+                    className="cursor-default"
+                    description={stat.label}
+                  />
+            
           ))}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           {stats.slice(4).map((stat) => (
-            <div key={stat.label} className="bg-white rounded-xl p-6 flex flex-col justify-between shadow-sm">
-              <span className="text-gray-500 text-sm mb-2">{stat.label}</span>
-              <span className="text-3xl font-bold text-gray-900">{stat.value}</span>
-            </div>
+            <GridBackground
+                    title={stat.value}
+                    className="cursor-default"
+                    description={stat.label}
+                  />
+            
           ))}
         </div>
 
         {/* Winning Videos & Creators */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="bg-white rounded-xl p-6 flex flex-col shadow-sm">
-            <span className="font-semibold text-lg mb-2">Winning Videos</span>
-            <span className="text-gray-500 text-sm mb-4">How many of this period’s videos are out-performing the pack, shown as both a count and a % of everything you published.</span>
-            <span className="text-2xl font-bold">5 <span className="text-lg">(18%)</span></span>
-          </div>
-          <div className="bg-white rounded-xl p-6 flex flex-col shadow-sm">
-            <span className="font-semibold text-lg mb-2">Winning Creators</span>
-            <span className="text-gray-500 text-sm mb-4">At a glance, see how many creators are consistently beating the average, expressed as a count and the % of your roster.</span>
-            <span className="text-2xl font-bold">2 <span className="text-lg">(66%)</span></span>
-          </div>
+          <CardSpotlight>
+    <h3 className="text-xl font-semibold text-n900">Winning Videos</h3>
+    <p className="text-sm text-gray-500 leading-relaxed">
+      How many of this period’s videos are out-performing the pack, shown as both a count and a % of everything you published.
+    </p>
+    <div className="mt-2 text-n900">
+      <span className="text-3xl font-bold">5</span>
+      <span className="text-lg font-medium text-gray-500 ml-1">(18%)</span>
+    </div>
+</CardSpotlight>
+
+          
+          
+          <CardSpotlight>
+    <h3 className="text-xl font-semibold text-n900">Winning Creators</h3>
+    <p className="text-sm text-gray-500 leading-relaxed">
+      At a glance, see how many creators are consistently beating the average, expressed as a count and the % of your roster.
+    </p>
+    <div className="mt-2 text-n900">
+      <span className="text-3xl font-bold">2</span>
+      <span className="text-lg font-medium text-gray-500 ml-1">(66%)</span>
+    </div>
+</CardSpotlight>
         </div>
 
         {/* Charts */}
