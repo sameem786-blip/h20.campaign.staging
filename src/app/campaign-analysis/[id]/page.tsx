@@ -26,6 +26,10 @@ import {
 } from "date-fns";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRightIcon } from "lucide-react";
+import { Creator } from "@/types";
+import HolographicCard from "@/components/ui/holographic-card";
+import Image from "next/image";
+import { supabase } from "@/lib/supabase";
 
 // Types for the API responses - all fields are optional
 interface AudienceAnalysis {
@@ -94,6 +98,11 @@ export default function CampaignAnalysisPage() {
   const [cpmData, setCpmData] = useState<CPMAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewPersona1Creators, setViewPersona1Creators] = useState(false);
+  const [viewPersona2Creators, setViewPersona2Creators] = useState(false);
+  const [viewPersona3Creators, setViewPersona3Creators] = useState(false);
+  const [selectedPersonaCreators, setSelectedPersonaCreators] = useState(null)
+  const [creatorImage, setCreatorImage] = useState<string | null>(null);
 
   const onStageClick = (key: "qualitative" | "quantitative") => {
     setCurrentStage(key);
@@ -139,6 +148,16 @@ export default function CampaignAnalysisPage() {
     if (campaignId) {
       fetchAnalysisData();
     }
+
+    const { data } = supabase.storage
+            .from("screenshots")
+            .getPublicUrl("instagram/mikaylasbookcorner.png");
+
+          if (data && data.publicUrl) {
+            // Make sure the URL is properly encoded
+            const url = new URL(data.publicUrl);
+            setCreatorImage(url.toString());
+          }
   }, [campaignId]);
 
   const formatNumber = (num: number) => {
@@ -182,6 +201,10 @@ export default function CampaignAnalysisPage() {
       </div>
     );
   }
+
+
+  
+
 
   return (
     <div className="min-h-screen bg-white playfair-font">
@@ -250,27 +273,154 @@ export default function CampaignAnalysisPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {audienceData.micro_segments
-                      .slice(0, 3)
-                      .map((segment, index) => (
-                        <CardSpotlight key={index} className="h-96 w-96">
-                          <p className="text-xl font-bold relative z-20 mt-2 text-black cursor-default">
-                            {segment?.segment || "Unknown Segment"}
-                          </p>
-                          <div className="text-black mt-4 relative z-20 cursor-default">
-                            {segment?.views_pool_share_percent || 0}% Views Pool
-                            Share
-                            <ul className="list-none  mt-2">
-                              {(segment?.core_interests || []).map(
-                                (interest, idx) => (
-                                  <Step key={idx} title={interest} />
-                                )
-                              )}
-                            </ul>
-                          </div>
-                        </CardSpotlight>
-                      ))}
-                  </div>
+  {audienceData.micro_segments.slice(0, 3).map((segment, index) => {
+    const toggleStates = [
+      viewPersona1Creators,
+      viewPersona2Creators,
+      viewPersona3Creators,
+    ];
+    const setToggleStates = [
+      setViewPersona1Creators,
+      setViewPersona2Creators,
+      setViewPersona3Creators,
+    ];
+
+    // Updated toggle logic: only one can be true at a time
+    const handleToggle = (checked: boolean) => {
+      setViewPersona1Creators(index === 0 ? checked : false);
+      setViewPersona2Creators(index === 1 ? checked : false);
+      setViewPersona3Creators(index === 2 ? checked : false);
+    };
+
+    return (
+      <CardSpotlight key={index} className="h-96 w-96 flex flex-col justify-between">
+        <div>
+          <p className="text-xl font-bold relative z-20 mt-2 text-black cursor-default">
+            {segment?.segment || "Unknown Segment"}
+          </p>
+          <div className="text-black mt-4 relative z-20 cursor-default">
+            {segment?.views_pool_share_percent || 0}% Views Pool Share
+            <ul className="list-none mt-2">
+              {(segment?.core_interests || []).map((interest, idx) => (
+                <Step key={idx} title={interest} />
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-col items-center">
+          <p className="text-sm text-gray-600 mb-2">View Creators</p>
+          <div className="h-5 w-8 flex items-center justify-center border border-md border-red-500 rounded-full bg-white shadow">
+            <div className="scale-50">
+              <Component
+                checked={toggleStates[index]}
+                onToggle={handleToggle}
+              />
+            </div>
+          </div>
+        </div>
+      </CardSpotlight>
+    );
+  })}
+</div>
+
+                </div>
+              )}
+
+              {viewPersona1Creators && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+                  <HolographicCard className="w-96">
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  <HolographicCard>
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  <HolographicCard>
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  
+                </div>
+              )}
+              {viewPersona2Creators && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+                  <HolographicCard>
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  <HolographicCard>
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  <HolographicCard>
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  
+                </div>
+              )}
+              {viewPersona3Creators && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+                  <HolographicCard>
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  <HolographicCard>
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  <HolographicCard>
+            <Image
+  src={creatorImage || ""}
+  alt="Creator"
+  fill
+  className="object-cover opacity-80 rounded-lg"
+/>
+            
+      </HolographicCard>
+                  
                 </div>
               )}
 

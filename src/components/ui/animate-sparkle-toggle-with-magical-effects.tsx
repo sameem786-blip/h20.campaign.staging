@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 
 
 interface ToggleProps {
@@ -7,6 +7,7 @@ interface ToggleProps {
 }
 
 const Component = ({ checked, onToggle }: ToggleProps) => {
+  const id = `toggle-${Math.random().toString(36).substr(2, 9)}`;
   const [isChecked, setIsChecked] = useState(!!checked);
 
   // Sync with controlled checked prop
@@ -78,13 +79,13 @@ const Component = ({ checked, onToggle }: ToggleProps) => {
       <div className="relative z-10 h-12 rounded-full w-fit">
         <input
           type="checkbox"
-          id="toggle"
+          id={id}
           checked={isChecked}
           onChange={handleToggle}
           className="hidden"
         />
         <label
-          htmlFor="toggle"
+          htmlFor={id}
           className={`cursor-pointer relative inline-block p-2 h-full rounded-full transition-all duration-300 ease-in-out ${
             isChecked
               ? 'bg-[#FF9A63] border border-teal-700'

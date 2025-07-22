@@ -672,7 +672,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                   Conversation Summary
                 </div>
                 <button
-                  className="py-1.5 px-3 text-center text-xs rounded-md bg-p500 color-n000 hover:bg-p600"
+                  className="py-1.5 px-3 text-center text-xs rounded-md bg-p200 cursor-pointer color-n000 hover:bg-p600"
                   onClick={() =>
                     router.push(`/email/${creator.conversation_id}`)
                   }
@@ -697,7 +697,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
                         className={`p-2 rounded text-xs border-l-4 ${
                           item.direction === "inbound"
                             ? "bg-p50 border-p200"
-                            : "bg-p200 border-p600"
+                            : "bg-[#FFC4A5] border-p600"
                         }`}
                       >
                         <div className="flex justify-between mb-1">

@@ -112,7 +112,7 @@ export function CreatorCarousel({ creators, loading }: CreatorCarouselProps) {
           <motion.button
             onClick={prevCreator}
             disabled={creators.length <= 1}
-            className="p-3 rounded-full bg-p400 text-gray-600 hover:bg-gray-50 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="p-3 rounded-full bg-p200 text-gray-600 hover:bg-gray-50 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             whileHover={{ scale: creators.length > 1 ? 1.1 : 1 }}
             whileTap={{ scale: creators.length > 1 ? 0.95 : 1 }}
           >
@@ -137,7 +137,7 @@ export function CreatorCarousel({ creators, loading }: CreatorCarouselProps) {
           <motion.button
             onClick={nextCreator}
             disabled={creators.length <= 1}
-            className="p-3 rounded-full bg-p400 text-gray-600 hover:bg-gray-50 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="p-3 rounded-full bg-p200 text-gray-600 hover:bg-gray-50 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             whileHover={{ scale: creators.length > 1 ? 1.1 : 1 }}
             whileTap={{ scale: creators.length > 1 ? 0.95 : 1 }}
           >
