@@ -1,49 +1,90 @@
 /* Brand Colors */
-.color-p500 { color: #FF9A63; }
-.bg-p500 { background-color: #FF9A63; }
-.border-p500 { border-color: #FF9A63; }
+.color-p500 {
+  color: #ff9a63;
+}
+.bg-p500 {
+  background-color: #ff9a63;
+}
+.border-p500 {
+  border-color: #ff9a63;
+}
 
-.color-p600 { color: #E3532C !important; }
-.bg-p600 { background-color: #E3532C; }
-.border-p600 { border-color: #E3532C; }
+.color-p600 {
+  color: #e3532c !important;
+}
+.bg-p600 {
+  background-color: #e3532c;
+}
+.border-p600 {
+  border-color: #e3532c;
+}
 
-.color-p400 { color: #FFA87D; }
-.bg-p400 { background-color: #FFA87D; }
-.border-p400 { border-color: #FFA87D; }
+.color-p400 {
+  color: #ffa87d;
+}
+.bg-p400 {
+  background-color: #ffa87d;
+}
+.border-p400 {
+  border-color: #ffa87d;
+}
 
-.color-p200 { color: #FFC4A5; }
-.bg-p200 { background-color: #FFC4A5; }
-.border-p200 { border-color: #FFC4A5; }
+.color-p200 {
+  color: #ffc4a5;
+}
+.bg-p200 {
+  background-color: #ffc4a5;
+}
+.border-p200 {
+  border-color: #ffc4a5;
+}
 
-.color-p50 { color: #FFF6F1; }
-.bg-p50 { background-color: #FFF6F1; }
-.border-p50 { border-color: #FFF6F1; }
+.color-p50 {
+  color: #fff6f1;
+}
+.bg-p50 {
+  background-color: #fff6f1;
+}
+.border-p50 {
+  border-color: #fff6f1;
+}
 
 /* Neutral Colors */
-.color-n900 { color: #1C1C1E; }
-.bg-n900 { background-color: #1C1C1E; }
-.border-n900 { border-color: #1C1C1E; }
+.color-n900 {
+  color: #1c1c1e;
+}
+.bg-n900 {
+  background-color: #1c1c1e;
+}
+.border-n900 {
+  border-color: #1c1c1e;
+}
 
-.color-n000 { color: #FFFFFF; }
-.bg-n000 { background-color: #FFFFFF; }
-.border-n000 { border-color: #FFFFFF; }
-
+.color-n000 {
+  color: #ffffff;
+}
+.bg-n000 {
+  background-color: #ffffff;
+}
+.border-n000 {
+  border-color: #ffffff;
+}
 
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
-.playfair-font{
+.playfair-font {
   font-family: var(--font-gt-america), sans-serif;
 }
 
 .headline-font {
-  color: #FF9A63;
+  color: #ff9a63;
 }
 
-.active-state{
-  color: #E3532C;
+.active-state {
+  color: #e3532c;
 }
 
 @theme inline {
@@ -175,8 +216,8 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 @tailwind base;
@@ -184,80 +225,123 @@
 @tailwind utilities;
 
 .hc-wrapper {
-          perspective: 600px;
-          transform: translate3d(0,0,0.1px);
-          position: relative;
-        }
-        .hc-wrapper::before {
-          content: '';
-          position: absolute;
-          inset: -15px;
-          background: radial-gradient(circle at 50% 50%, #00c1ffff 1%, #073aff00 76%), conic-gradient(from 124deg at 50% 50%, #c137ffff 0%, #07c6ffff 40%, #07c6ffff 60%, #c137ffff 100%);
-          border-radius: inherit;
-          transition: all 0.6s ease;
-          filter: contrast(1.5) saturate(1.5) blur(40px);
-          transform: scale(0.85);
-          opacity: 0.5;
-        }
-        .hc-wrapper.active::before {
-          filter: contrast(1) saturate(1) blur(40px);
-          transform: scale(0.95);
-          opacity: 1;
-        }
-        .hc-card {
-          width: 320px;
-          height: 480px;
-          border-radius: var(--hc-card-radius);
-          position: relative;
-          background: radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), hsla(266, 100%, 90%, var(--card-opacity, 0)) 4%, hsla(266, 0%, 60%, 0) 100%), radial-gradient(35% 52% at 55% 20%, #00ffaac4 0%, #073aff00 100%), radial-gradient(100% 100% at 50% 50%, #00c1ffff 1%, #073aff00 76%), conic-gradient(from 124deg at 50% 50%, #c137ffff 0%, #07c6ffff 40%, #07c6ffff 60%, #c137ffff 100%);
-          overflow: hidden;
-          transform-style: preserve-3d;
-          transition: transform 1s ease;
-          transform: rotateY(var(--rotate-y, 0deg)) rotateX(var(--rotate-x, 0deg));
-        }
-        .hc-card.active {
-          transition: transform 0.1s ease;
-        }
-        .hc-card * {
-          transform-style: preserve-3d;
-        }
-        .hc-inside {
-          position: absolute;
-          inset: 1px;
-          border-radius: var(--hc-card-radius);
-          background: linear-gradient(145deg, #2d2333 0%, #3a5e74 100%);
-          transform: translateZ(0.1px);
-          overflow: hidden;
-        }
-        .hc-shine {
-          position: absolute;
-          inset: 0;
-          z-index: 3;
-          background: repeating-linear-gradient(0deg, hsl(53, 100%, 69%) calc(5% * 1), hsl(93, 100%, 69%) calc(5% * 2), hsl(176, 100%, 76%) calc(5% * 3), hsl(228, 100%, 74%) calc(5% * 4), hsl(283, 100%, 73%) calc(5% * 5), hsl(2, 100%, 73%) calc(5% * 6), hsl(53, 100%, 69%) calc(5% * 7)), repeating-linear-gradient(-45deg, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%);
-          background-position: 0 var(--background-y, 50%), var(--background-x, 50%) var(--background-y, 50%);
-          background-size: 500% 500%, 300% 300%;
-          background-blend-mode: color-dodge;
-          filter: brightness(0.8) contrast(1.5) saturate(0.8);
-          opacity: 0.5;
-          mix-blend-mode: color-dodge;
-        }
-        .hc-glare {
-          position: absolute;
-          inset: 0;
-          z-index: 4;
-          background: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), hsla(0,0%,100%,0.8) 10%, hsla(0,0%,100%,0) 80%);
-          mix-blend-mode: overlay;
-          opacity: calc(var(--pointer-from-center, 0) * 0.7 + 0.3);
-        }
-        .hc-content-wrapper {
-          position: relative;
-          z-index: 5;
-          width: 100%;
-          height: 100%;
-          padding: 2rem;
-          color: white;
-          transform: translateZ(1px);
-        }
+  perspective: 600px;
+  transform: translate3d(0, 0, 0.1px);
+  position: relative;
+}
+.hc-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -15px;
+  background: radial-gradient(circle at 50% 50%, #ff9a63 1%, #073aff00 76%),
+    conic-gradient(
+      from 124deg at 50% 50%,
+      #e3532c 0%,
+      #ff9a63 40%,
+      #ff9a63 60%,
+      #e3532c 100%
+    );
+  border-radius: inherit;
+  transition: all 0.6s ease;
+  filter: contrast(1.5) saturate(1.5) blur(40px);
+  transform: scale(0.85);
+  opacity: 0.5;
+}
+.hc-wrapper.active::before {
+  filter: contrast(1) saturate(1) blur(40px);
+  transform: scale(0.95);
+  opacity: 1;
+}
+.hc-card {
+  width: 320px;
+  height: 480px;
+  border-radius: var(--hc-card-radius);
+  position: relative;
+  background: radial-gradient(
+      farthest-side circle at var(--pointer-x) var(--pointer-y),
+      hsla(266, 100%, 90%, var(--card-opacity, 0)) 4%,
+      hsla(266, 0%, 60%, 0) 100%
+    ),
+    radial-gradient(35% 52% at 55% 20%, #00ffaac4 0%, #073aff00 100%),
+    radial-gradient(100% 100% at 50% 50%, #00c1ffff 1%, #073aff00 76%),
+    conic-gradient(
+      from 124deg at 50% 50%,
+      #e3532c 0%,
+      #ff9a63 40%,
+      #ff9a63 60%,
+      #e3532c 100%
+    );
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 1s ease;
+  transform: rotateY(var(--rotate-y, 0deg)) rotateX(var(--rotate-x, 0deg));
+}
+.hc-card.active {
+  transition: transform 0.1s ease;
+}
+.hc-card * {
+  transform-style: preserve-3d;
+}
+.hc-inside {
+  position: absolute;
+  inset: 1px;
+  border-radius: var(--hc-card-radius);
+  background: linear-gradient(145deg, #2d2333 0%, #3a5e74 100%);
+  transform: translateZ(0.1px);
+  overflow: hidden;
+}
+.hc-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: repeating-linear-gradient(
+      0deg,
+      hsl(53, 100%, 69%) calc(5% * 1),
+      hsl(93, 100%, 69%) calc(5% * 2),
+      hsl(176, 100%, 76%) calc(5% * 3),
+      hsl(228, 100%, 74%) calc(5% * 4),
+      hsl(283, 100%, 73%) calc(5% * 5),
+      hsl(2, 100%, 73%) calc(5% * 6),
+      hsl(53, 100%, 69%) calc(5% * 7)
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      #0e152e 0%,
+      hsl(180, 10%, 60%) 3.8%,
+      hsl(180, 29%, 66%) 4.5%,
+      hsl(180, 10%, 60%) 5.2%,
+      #0e152e 10%,
+      #0e152e 12%
+    );
+  background-position: 0 var(--background-y, 50%),
+    var(--background-x, 50%) var(--background-y, 50%);
+  background-size: 500% 500%, 300% 300%;
+  background-blend-mode: color-dodge;
+  filter: brightness(0.8) contrast(1.5) saturate(0.8);
+  opacity: 0.5;
+  mix-blend-mode: color-dodge;
+}
+.hc-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: radial-gradient(
+    farthest-corner circle at var(--pointer-x) var(--pointer-y),
+    hsla(0, 0%, 100%, 0.8) 10%,
+    hsla(0, 0%, 100%, 0) 80%
+  );
+  mix-blend-mode: overlay;
+  opacity: calc(var(--pointer-from-center, 0) * 0.7 + 0.3);
+}
+.hc-content-wrapper {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  color: white;
+  transform: translateZ(1px);
+}
 
 @keyframes border-follow {
   0% {
@@ -289,125 +373,123 @@
 
 @keyframes color-change {
   0% {
-    color: #1C1C1E;
+    color: #1c1c1e;
   }
   25% {
-    color: #E3532C;
+    color: #e3532c;
   }
   50% {
-    color: #FFA87D;
+    color: #ffa87d;
   }
   75% {
-    color: #FFF6F1;
+    color: #fff6f1;
   }
   100% {
-    color: #1C1C1E;
+    color: #1c1c1e;
   }
 }
 
 @keyframes border-color-change {
   0% {
-    border-color: #1C1C1E;
+    border-color: #1c1c1e;
   }
   25% {
-    border-color: #E3532C;
+    border-color: #e3532c;
   }
   50% {
-    border-color: #FFA87D;
+    border-color: #ffa87d;
   }
   75% {
-    border-color: #FFF6F1;
+    border-color: #fff6f1;
   }
   100% {
-    border-color: #1C1C1E;
+    border-color: #1c1c1e;
   }
 }
 
-
-
 @layer base {
   @property --pos-x {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 11.14%;
     inherits: false;
   }
   @property --pos-y {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 140%;
     inherits: false;
   }
   @property --spread-x {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 150%;
     inherits: false;
   }
   @property --spread-y {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 180.06%;
     inherits: false;
   }
   @property --color-1 {
-    syntax: '<color>';
+    syntax: "<color>";
     initial-value: #000;
     inherits: false;
   }
   @property --color-2 {
-    syntax: '<color>';
+    syntax: "<color>";
     initial-value: #08012c;
     inherits: false;
   }
   @property --color-3 {
-    syntax: '<color>';
+    syntax: "<color>";
     initial-value: #4e1e40;
     inherits: false;
   }
   @property --color-4 {
-    syntax: '<color>';
+    syntax: "<color>";
     initial-value: #70464e;
     inherits: false;
   }
   @property --color-5 {
-    syntax: '<color>';
+    syntax: "<color>";
     initial-value: #88394c;
     inherits: false;
   }
   @property --border-angle {
-    syntax: '<angle>';
+    syntax: "<angle>";
     initial-value: 20deg;
     inherits: true;
   }
   @property --border-color-1 {
-    syntax: '<color>';
+    syntax: "<color>";
     initial-value: hsla(340, 75%, 60%, 0.2);
     inherits: true;
   }
   @property --border-color-2 {
-    syntax: '<color>';
+    syntax: "<color>";
     initial-value: hsla(340, 75%, 40%, 0.75);
     inherits: true;
   }
   @property --stop-1 {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 37.35%;
     inherits: false;
   }
   @property --stop-2 {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 61.36%;
     inherits: false;
   }
   @property --stop-3 {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 78.42%;
     inherits: false;
   }
   @property --stop-4 {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 89.52%;
     inherits: false;
   }
   @property --stop-5 {
-    syntax: '<percentage>';
+    syntax: "<percentage>";
     initial-value: 100%;
     inherits: false;
   }
@@ -424,27 +506,14 @@
       var(--color-4) var(--stop-4),
       var(--color-5) var(--stop-5)
     );
-    transition:
-      --pos-x 0.5s,
-      --pos-y 0.5s,
-      --spread-x 0.5s,
-      --spread-y 0.5s,
-      --color-1 0.5s,
-      --color-2 0.5s,
-      --color-3 0.5s,
-      --color-4 0.5s,
-      --color-5 0.5s,
-      --border-angle 0.5s,
-      --border-color-1 0.5s,
-      --border-color-2 0.5s,
-      --stop-1 0.5s,
-      --stop-2 0.5s,
-      --stop-3 0.5s,
-      --stop-4 0.5s,
-      --stop-5 0.5s;
+    transition: --pos-x 0.5s, --pos-y 0.5s, --spread-x 0.5s, --spread-y 0.5s,
+      --color-1 0.5s, --color-2 0.5s, --color-3 0.5s, --color-4 0.5s,
+      --color-5 0.5s, --border-angle 0.5s, --border-color-1 0.5s,
+      --border-color-2 0.5s, --stop-1 0.5s, --stop-2 0.5s, --stop-3 0.5s,
+      --stop-4 0.5s, --stop-5 0.5s;
   }
   .gradient-button::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
@@ -463,12 +532,11 @@
     --pos-y: 91.51%;
     --spread-x: 120.24%;
     --spread-y: 103.18%;
-    
 
-    --color-1: #FFC4A5;
-    --color-2: #FFA87D;
-    --color-3: #FF9A63;
-    --color-4: #E3532C;
+    --color-1: #ffc4a5;
+    --color-2: #ffa87d;
+    --color-3: #ff9a63;
+    --color-4: #e3532c;
     --color-5: #000;
     --border-angle: 190deg;
     --border-color-1: hsla(340, 78%, 90%, 0.1);
