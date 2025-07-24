@@ -28,6 +28,7 @@ export interface AgentRun {
   execution_agent_output: string | null;
   suggested_email_body: string | null;
   email_body_approved: string | null;
+  email_body_feedback: string | null;
   follow_up_needed: boolean;
   follow_up_date: string | null;
   review: boolean;

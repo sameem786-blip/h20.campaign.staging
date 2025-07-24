@@ -85,75 +85,42 @@ export default function CreatorsTable({
     setCreators([]);
   };
 
-  const handleExportCSV = () => {
-    try {
-      if (filteredCreators.length === 0) {
-        // toast({
-        //   title: "No data to export",
-        //   description: "Please apply different filters to export data.",
-        //   variant: "destructive",
-        // });
-        alert(
-          "No data to export. Please apply different filters to export data."
-        );
-        return;
-      }
-
-      // Generate human-readable headers
-      const csvFields = [
-        "first_name",
-        "full_name",
-        "instagram_profile_url",
-        "evaluation_score",
-        "evaluation_reasoning",
-        "id",
-        "instagram_followers",
-        "instagram_profile_bio",
-        "tiktok_profile_url",
-        "tiktok_followers",
-        "tiktok_profile_bio",
-        "youtube_channel_url",
-        "youtube_subscribers",
-        "youtube_channel_bio",
-        "public_email",
-        "instagram_email",
-        "tiktok_email",
-        "youtube_email",
-        "youtube_video_id",
-        "source",
-        "source_network",
-      ];
-
-      const headers = csvFields.map((field) =>
-        field
-          .replace(/([A-Z])/g, " $1")
-          .replace(/^./, (str) => str.toUpperCase())
-          .trim()
-      );
-
-      const csv = Papa.unparse({
-        fields: csvFields,
-        data: filteredCreators,
-      });
-
-      // Create and download the file
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `creators-${
-        networkFilter !== "all" ? networkFilter : "all"
-      }-${new Date().toISOString().slice(0, 19).replace(/:/g, "-")}.csv`;
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error exporting CSV:", error);
+const handleExportCSV = async () => {
+  try {
+    if (filteredCreators.length === 0) {
+      alert("No data to export. Please apply different filters to export data.");
+      return;
     }
-  };
+
+    const run = selectedRun || "all";
+    const network = networkFilter || "all";
+
+    const res = await axiosInstance.get(
+      `/csv/campaigns/${campaignId}/runs/${run}/networks/${network}`
+    );
+
+    const csvUrl = res.data?.csv_url;
+    if (!csvUrl) throw new Error("CSV URL not found in response.");
+
+    // Fetch CSV content as blob
+    const response = await fetch(csvUrl);
+    const blob = await response.blob();
+
+    const blobUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = `creators-${network}-${new Date().toISOString().slice(0, 19).replace(/:/g, "-")}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error("Error exporting CSV:", error);
+    alert("Failed to export CSV. Please try again.");
+  }
+};
+
+
 
   const truncateText = (text: string | null | undefined, maxLength = 50) => {
     if (!text) return "";

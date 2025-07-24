@@ -12,6 +12,62 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import he from 'he';
 
+// Feedback Modal Component
+function FeedbackModal({ 
+  isOpen, 
+  onClose, 
+  onSubmit, 
+  isSubmitting 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  onSubmit: (feedback: string) => void;
+  isSubmitting: boolean;
+}) {
+  const [feedback, setFeedback] = useState('');
+
+  const handleSubmit = () => {
+    onSubmit(feedback);
+    setFeedback('');
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="absolute inset-0 backdrop-blur-xs"></div>
+      <div className="relative bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl border">
+        <h3 className="text-lg font-semibold mb-4">Provide Feedback</h3>
+        <p className="text-sm text-gray-600 mb-4">
+          What changes were needed for the AI-suggested email body?
+        </p>
+        <Textarea
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          placeholder="Describe what needed to be changed..."
+          rows={4}
+          className="w-full mb-4"
+        />
+        <div className="flex justify-end space-x-2">
+          <Button 
+            variant="outline" 
+            onClick={onClose}
+            disabled={isSubmitting}
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSubmit}
+            disabled={isSubmitting || !feedback.trim()}
+          >
+            {isSubmitting ? 'Saving...' : 'Save Feedback'}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function EmailDetailPage() {
   const router = useRouter();
   const params = useParams();
@@ -21,9 +77,12 @@ export default function EmailDetailPage() {
   const [agentRun, setAgentRun] = useState<AgentRun | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedEmailBody, setEditedEmailBody] = useState('');
+  const [originalEmailBody, setOriginalEmailBody] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [creatorId, setCreatorId] = useState<string | null>(null);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +111,8 @@ export default function EmailDetailPage() {
           .from('vw_conversation_details')
           .select('creator_id')
           .eq('conversation_id', id)
+          .order('last_message_sent_at', { ascending: false })
+          .limit(1)
           .single();
           
         if (!creatorError && creatorData) {
@@ -69,11 +130,14 @@ export default function EmailDetailPage() {
             .from('agent_runs')
             .select('*')
             .eq('message_id', latestInboundMessage.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
             .single();
             
           if (!agentRunError && agentRunData) {
             setAgentRun(agentRunData);
             setEditedEmailBody(agentRunData.suggested_email_body || '');
+            setOriginalEmailBody(agentRunData.suggested_email_body || '');
           }
         }
         
@@ -98,7 +162,17 @@ export default function EmailDetailPage() {
         return;
       }
       
-      // Otherwise, update in Supabase
+      // Check if feedback is already provided or if the email body hasn't changed
+      const hasExistingFeedback = agentRun.email_body_feedback && agentRun.email_body_feedback.trim() !== '';
+      const emailBodyChanged = originalEmailBody !== editedEmailBody;
+      
+      if (emailBodyChanged && !hasExistingFeedback) {
+        // Show feedback modal before saving
+        setShowFeedbackModal(true);
+        return;
+      }
+      
+      // Otherwise, just update the email body without feedback
       const { error } = await supabase
         .from('agent_runs')
         .update({ suggested_email_body: editedEmailBody })
@@ -107,10 +181,49 @@ export default function EmailDetailPage() {
       if (error) throw error;
       
       setAgentRun({ ...agentRun, suggested_email_body: editedEmailBody });
+      setOriginalEmailBody(editedEmailBody);
       setIsEditing(false);
+      toast.success('Changes saved successfully!');
     } catch (err) {
       console.error('Error updating email body:', err);
       setError('Failed to save changes');
+    }
+  };
+
+  const handleFeedbackSubmit = async (userFeedback: string) => {
+    if (!agentRun) return;
+    
+    try {
+      setIsSubmittingFeedback(true);
+      
+      // Create the feedback text
+      const feedbackText = `Original email body:\n${originalEmailBody}\n\nUpdated email body:\n${editedEmailBody}\n\nUser feedback:\n${userFeedback}`;
+      
+      // Update both the email body and feedback
+      const { error } = await supabase
+        .from('agent_runs')
+        .update({ 
+          suggested_email_body: editedEmailBody,
+          email_body_feedback: feedbackText
+        })
+        .eq('id', agentRun.id);
+        
+      if (error) throw error;
+      
+      setAgentRun({ 
+        ...agentRun, 
+        suggested_email_body: editedEmailBody,
+        email_body_feedback: feedbackText
+      });
+      setOriginalEmailBody(editedEmailBody);
+      setIsEditing(false);
+      setShowFeedbackModal(false);
+      toast.success('Changes and feedback saved successfully!');
+    } catch (err) {
+      console.error('Error saving feedback:', err);
+      toast.error('Failed to save feedback. Please try again.');
+    } finally {
+      setIsSubmittingFeedback(false);
     }
   };
   
@@ -175,6 +288,12 @@ export default function EmailDetailPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <ToastContainer position="top-right" autoClose={3000} />
+      <FeedbackModal
+        isOpen={showFeedbackModal}
+        onClose={() => setShowFeedbackModal(false)}
+        onSubmit={handleFeedbackSubmit}
+        isSubmitting={isSubmittingFeedback}
+      />
       <div className="flex items-center justify-between mb-6">
         <Button variant="outline" onClick={handleBack}>
           ← Back to Outreach

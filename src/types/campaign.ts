@@ -7,6 +7,7 @@ export type Campaign = {
   name?: string;
   campaign_type_id?: number;
   company_details?: string;
+  creative_brief?: string;
   campaign_status_by_platform?: [];
   research_overview?: [];
   runs_summary_list?: Run[];

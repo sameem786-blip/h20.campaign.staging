@@ -97,6 +97,7 @@ export interface Conversation {
   last_message_tags: string[];
   last_message_follow_up_needed: boolean;
   email_body_approved: string | null;
+  last_agent_run_created_at: string | null;
 }
 
 export interface ConversationFilters {

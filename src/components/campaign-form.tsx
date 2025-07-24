@@ -22,6 +22,7 @@ export default function CampaignForm({ mode, campaignId, title }: CampaignFormPr
   const router = useRouter()
   const [campaignName, setCampaignName] = useState("")
   const [companyDetails, setCompanyDetails] = useState("")
+  const [creativeBrief, setCreativeBrief] = useState("")
   const [selectedCampaignTypeId, setSelectedCampaignTypeId] = useState<string>("")
   const [campaignTypes, setCampaignTypes] = useState<CampaignType[]>([])
   const [selectedCampaignTypeStages, setSelectedCampaignTypeStages] = useState<ConversationStage[]>([])
@@ -93,7 +94,7 @@ export default function CampaignForm({ mode, campaignId, title }: CampaignFormPr
       // Load campaign basic info
       const { data: campaignData, error: campaignError } = await supabase
         .from('campaigns')
-        .select('id, name, company_details, campaign_type_id')
+        .select('id, name, company_details, creative_brief, campaign_type_id')
         .eq('id', campaignId)
         .single()
 
@@ -102,6 +103,7 @@ export default function CampaignForm({ mode, campaignId, title }: CampaignFormPr
       if (campaignData) {
         setCampaignName(campaignData.name)
         setCompanyDetails(campaignData.company_details || '')
+        setCreativeBrief(campaignData.creative_brief || '')
         setSelectedCampaignTypeId(campaignData.campaign_type_id?.toString() || '')
       }
     } catch (error) {
@@ -156,6 +158,7 @@ export default function CampaignForm({ mode, campaignId, title }: CampaignFormPr
           .insert({
             name: campaignName.trim(),
             company_details: companyDetails.trim() || null,
+            creative_brief: creativeBrief.trim() || null,
             campaign_type_id: parseInt(selectedCampaignTypeId)
           })
 
@@ -167,6 +170,7 @@ export default function CampaignForm({ mode, campaignId, title }: CampaignFormPr
           .update({
             name: campaignName.trim(),
             company_details: companyDetails.trim() || null,
+            creative_brief: creativeBrief.trim() || null,
             campaign_type_id: parseInt(selectedCampaignTypeId)
           })
           .eq('id', campaignId)
@@ -328,7 +332,19 @@ export default function CampaignForm({ mode, campaignId, title }: CampaignFormPr
                   value={companyDetails}
                   onChange={(e) => setCompanyDetails(e.target.value)}
                   rows={4}
-                  className="resize-none"
+                  className="resize-y"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="creativeBrief" className="block text-sm font-medium text-gray-700 mb-2">
+                  Creative Brief (Optional)
+                </label>
+                <Input
+                  id="creativeBrief"
+                  placeholder="Enter creative brief for this campaign"
+                  value={creativeBrief}
+                  onChange={(e) => setCreativeBrief(e.target.value)}
                 />
               </div>
             </CardContent>

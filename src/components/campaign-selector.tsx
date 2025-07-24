@@ -102,6 +102,7 @@ export default function Component() {
             discovery_method: method,
             input_list: accounts.split("\n").map((acc) => acc.trim()).filter(Boolean),
             prompt_id: selectedEvaluation,
+            country_list: countries
           }
         );
 
@@ -130,6 +131,10 @@ export default function Component() {
               discovery_method: method,
               input_list: accounts.split("\n").map((acc) => acc.trim()).filter(Boolean),
               prompt_id: selectedEvaluation,
+              minimum_followers: Number(followerMin),
+              maximum_followers: Number(followerMax),
+              country_list: countries
+
             }
           );
 
@@ -501,7 +506,9 @@ export default function Component() {
                   {/* Countries */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <Label>Countries</Label>
+                      <Label onClick={() => {
+                        console.log("Countries clicked", countries);
+                      }}>Countries</Label>
                       <button
                         type="button"
                         className={`w-10 cursor-pointer h-6 rounded-full ${filterCountriesEnabled ? "bg-black" : "bg-gray-300"} flex items-center`}

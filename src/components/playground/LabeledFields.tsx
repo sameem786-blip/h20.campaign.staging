@@ -31,7 +31,7 @@ export function LabeledTextarea({
   label: string;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
-    <div className="bg-[#f7f8fa] rounded-xl p-6 mb-4">
+    <div className="bg-[#FFA87D] rounded-xl p-6 mb-4">
       <div className="text-sm text-gray-500 font-semibold mb-1 flex items-center gap-2">
         {icon}
         {label}
