@@ -488,6 +488,7 @@ export default function Performance() {
 
         {/* Table (header stays, body scrolls) */}
         <div className="mb-8 rounded-xl bg-white p-6 shadow-sm">
+          <span className="font-semibold text-lg mb-4 block">Tracked Videos</span>
           <div className="my-4">
             <TableProvider columns={columns} data={contentRows} className="min-w-full rounded-lg border">
               <TableHeader className="">
