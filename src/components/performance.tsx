@@ -194,7 +194,7 @@ const columns: ColumnDef<ContentRow>[] = [
     accessorKey: "account",
     header: ({ column }) => <TableColumnHeader column={column} title="Account" />,
     cell: ({ row }) => <span className="font-medium">{row.original.account}</span>,
-    enableSorting: true,
+    enableSorting: false,
   },
   {
   accessorKey: "platform",
@@ -204,13 +204,13 @@ const columns: ColumnDef<ContentRow>[] = [
       {platformIcons[row.original.platform]}
     </span>
   ),
-  enableSorting: true,
+  enableSorting: false,
 },
   {
     accessorKey: "thumbnail",
     header: ({ column }) => <TableColumnHeader column={column} title="Thumbnail" />,
     cell: ({ row }) => (
-      <div className="h-15 w-10 overflow-hidden rounded-md bg-gray-100">
+      <div className="h-12 w-8 overflow-hidden rounded-md bg-gray-100">
         {row.original.thumbnail ? (
           <Image src={row.original.thumbnail} alt={row.original.title} width={80} height={48} className="h-full w-full object-cover" />
         ) : (
@@ -225,7 +225,7 @@ const columns: ColumnDef<ContentRow>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => <TableColumnHeader column={column} title="Video Title" />,
-    cell: ({ row }) => <span className="line-clamp-2">{row.original.title}</span>,
+    cell: ({ row }) => <span className="line-clamp-2 w-50">{row.original.title}</span>,
   },
   {
     accessorKey: "views",
@@ -313,7 +313,7 @@ const columns: ColumnDef<ContentRow>[] = [
     cell: ({ row }) => (
       <div className="flex flex-wrap gap-1">
         {row.original.hashtags.map((tag) => (
-          <span key={tag} className="rounded bg-gray-100 px-2 py-0.5 text-xs">{tag}</span>
+          <span key={tag} className="rounded bg-gray-100 px-0 py-0.5 text-xs">{tag}</span>
         ))}
       </div>
     ),
