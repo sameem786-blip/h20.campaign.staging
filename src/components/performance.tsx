@@ -1,7 +1,8 @@
 // path: src/app/(dashboard)/performance/page.tsx
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import { FaTiktok, FaYoutube, FaInstagram, FaFacebook } from "react-icons/fa";
+import React, { useState, useRef, useEffect, JSX } from "react";
 import {
   BarChart,
   Bar,
@@ -50,6 +51,13 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
+
+const platformIcons: Record<ContentRow["platform"], JSX.Element> = {
+  TikTok: <FaTiktok className="h-4 w-4 text-black" />,
+  YouTube: <FaYoutube className="h-4 w-4 text-red-600" />,
+  Instagram: <FaInstagram className="h-4 w-4 text-pink-500" />,
+  Facebook: <FaFacebook className="h-4 w-4 text-blue-600" />,
+};
 
 // --- Helpers ---
 function formatNumberShort(n: number): string {
@@ -189,15 +197,15 @@ const columns: ColumnDef<ContentRow>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: "platform",
-    header: ({ column }) => <TableColumnHeader column={column} title="Platform" />,
-    cell: ({ row }) => (
-      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs">
-        {row.original.platform}
-      </span>
-    ),
-    enableSorting: true,
-  },
+  accessorKey: "platform",
+  header: ({ column }) => <TableColumnHeader column={column} title="Platform" />,
+  cell: ({ row }) => (
+    <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs">
+      {platformIcons[row.original.platform]}
+    </span>
+  ),
+  enableSorting: true,
+},
   {
     accessorKey: "thumbnail",
     header: ({ column }) => <TableColumnHeader column={column} title="Thumbnail" />,
