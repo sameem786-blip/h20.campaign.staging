@@ -1,3 +1,4 @@
+// path: src/app/(dashboard)/performance/page.tsx
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
@@ -12,9 +13,9 @@ import {
   LineChart,
   Line,
 } from "recharts";
+const today = new Date();
 import {
   MdGridView,
-  MdAlternateEmail,
   MdCalendarToday,
   MdVideocam,
 } from "react-icons/md";
@@ -28,278 +29,306 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select2";
+import { GradientButton } from "./ui/gradient-button";
+import {
+  TableBody,
+  TableCell,
+  TableColumnHeader,
+  TableHead,
+  TableHeader,
+  TableHeaderGroup,
+  TableProvider,
+  TableRow,
+} from "@/components/ui/data-table";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+  subDays,
+  subMonths,
+} from "date-fns";
+import type { ColumnDef } from "@tanstack/react-table";
+import { ChevronRightIcon } from "lucide-react";
+import Image from "next/image";
 
-const stats = [
-  { label: "Published Videos", value: "27" },
-  { label: "Total Creators", value: "3" },
-  { label: "Views", value: "15.5M" },
-  { label: "Likes", value: "335.3k" },
-  { label: "Comments", value: "34.7k" },
-  { label: "Shares", value: "21.3k" },
-  { label: "Bookmarks", value: "11.3k" },
-  { label: "Engagement", value: "3%" },
-];
-
-const creators = [
-  {
-    id: 1,
-    name: "Test Creator",
-    profilePicture: "/images/creator1.jpg",
-    handle: "@testcreator",
-    engagementRate: "3.2%",
-  },
-  {
-    id: 2,
-    name: "Test Creator 2",
-    profilePicture: "/images/creator2.jpg",
-    handle: "@testcreator2",
-    engagementRate: "4.5%",
-  },
-  {
-    id: 3,
-    name: "Test Creator 3",
-    profilePicture: "/images/creator3.jpg",
-    handle: "@testcreator3",
-    engagementRate: "2.8%",
-  },
-  {
-    id: 4,
-    name: "Test Creator 4",
-    profilePicture: "/images/creator4.jpg",
-    handle: "@testcreator4",
-    engagementRate: "3.2%",
-  },
-];
-
-// Dummy data for all metrics, now with campaign field
-const interactionData = [
-  {
-    date: "2025-05-07",
-    campaign: "round2",
-    views: 40000,
-    comments: 12000,
-    likes: 41000,
-    saves: 8000,
-    shares: 9000,
-  },
-  {
-    date: "2025-05-08",
-    campaign: "aldea",
-    views: 65000,
-    comments: 18000,
-    likes: 67000,
-    saves: 12000,
-    shares: 15000,
-  },
-  {
-    date: "2025-05-09",
-    campaign: "round2",
-    views: 21000,
-    comments: 7000,
-    likes: 20000,
-    saves: 4000,
-    shares: 5000,
-  },
-  {
-    date: "2025-05-10",
-    campaign: "aldea",
-    views: 3000,
-    comments: 1000,
-    likes: 2500,
-    saves: 800,
-    shares: 1200,
-  },
-  {
-    date: "2025-05-11",
-    campaign: "round2",
-    views: 2000,
-    comments: 800,
-    likes: 1800,
-    saves: 600,
-    shares: 900,
-  },
-  {
-    date: "2025-05-12",
-    campaign: "aldea",
-    views: 32000,
-    comments: 9000,
-    likes: 31000,
-    saves: 7000,
-    shares: 11000,
-  },
-  {
-    date: "2025-05-13",
-    campaign: "round2",
-    views: 47000,
-    comments: 14000,
-    likes: 46000,
-    saves: 9000,
-    shares: 13000,
-  },
-  {
-    date: "2025-05-14",
-    campaign: "aldea",
-    views: 49000,
-    comments: 15000,
-    likes: 48000,
-    saves: 9500,
-    shares: 13500,
-  },
-  {
-    date: "2025-05-15",
-    campaign: "round2",
-    views: 42000,
-    comments: 12000,
-    likes: 41000,
-    saves: 8000,
-    shares: 9000,
-  },
-  {
-    date: "2025-05-16",
-    campaign: "aldea",
-    views: 17000,
-    comments: 6000,
-    likes: 16000,
-    saves: 4000,
-    shares: 5000,
-  },
-  {
-    date: "2025-05-17",
-    campaign: "round2",
-    views: 9000,
-    comments: 3000,
-    likes: 8500,
-    saves: 2000,
-    shares: 2500,
-  },
-  {
-    date: "2025-05-18",
-    campaign: "aldea",
-    views: 6000,
-    comments: 2000,
-    likes: 5500,
-    saves: 1500,
-    shares: 1800,
-  },
-  {
-    date: "2025-05-19",
-    campaign: "round2",
-    views: 5000,
-    comments: 1500,
-    likes: 4800,
-    saves: 1200,
-    shares: 1600,
-  },
-];
-
-const metricOptions = [
-  { key: "views", label: "Views", color: "#a78bfa" },
-  { key: "comments", label: "Comments", color: "#a78bfa" },
-  { key: "likes", label: "Likes", color: "#a78bfa" },
-  { key: "saves", label: "Saves", color: "#a78bfa" },
-  { key: "shares", label: "Shares", color: "#a78bfa" },
-];
-
-// Add a helper for K/M formatting
+// --- Helpers ---
 function formatNumberShort(n: number): string {
-  if (n >= 1_000_000)
-    return (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + "M";
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + "M";
   if (n >= 1_000) return (n / 1_000).toFixed(n % 1_000 === 0 ? 0 : 1) + "K";
   return n.toString();
 }
 
-function CustomBarTooltip({
-  active,
-  payload,
-  label,
-  selectedMetric,
-}: {
-  active?: boolean;
-  payload?: any[];
-  label?: string;
-  selectedMetric: string;
-}) {
-  if (active && payload && payload.length) {
-    const date = new Date(label || "");
-    const formattedDate = date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    const metricLabel =
-      metricOptions.find((opt) => opt.key === selectedMetric)?.label ||
-      selectedMetric;
-    return (
-      <div
-        style={{
-          background: "white",
-          borderRadius: 8,
-          boxShadow: "0 2px 8px #0001",
-          padding: 12,
-          border: "1px solid #eee",
-        }}
-      >
-        <div style={{ fontWeight: 500, marginBottom: 4 }}>{formattedDate}</div>
-        <div style={{ color: "#a78bfa", fontWeight: 600 }}>
-          {metricLabel} : {formatNumberShort(payload[0]?.value)}
-        </div>
-      </div>
-    );
-  }
-  return null;
+function toPercent(n: number, digits = 2) {
+  return `${n.toFixed(digits)}%`;
 }
 
-const engagementData = [
-  { date: "2025-05-07", campaign: "round2", engagement: 3 },
-  { date: "2025-05-08", campaign: "aldea", engagement: 2.5 },
-  { date: "2025-05-09", campaign: "round2", engagement: 2 },
-  { date: "2025-05-10", campaign: "aldea", engagement: 0.5 },
-  { date: "2025-05-11", campaign: "round2", engagement: 0.2 },
-  { date: "2025-05-12", campaign: "aldea", engagement: 1 },
-  { date: "2025-05-13", campaign: "round2", engagement: 2 },
-  { date: "2025-05-14", campaign: "aldea", engagement: 6 },
-  { date: "2025-05-15", campaign: "round2", engagement: 3 },
-  { date: "2025-05-16", campaign: "aldea", engagement: 1 },
-  { date: "2025-05-17", campaign: "round2", engagement: 0.2 },
-  { date: "2025-05-18", campaign: "aldea", engagement: 0.1 },
-  { date: "2025-05-19", campaign: "round2", engagement: 0.1 },
+// --- New row type & dummy dataset ---
+export type ContentRow = {
+  id: string;
+  account: string;
+  platform: "TikTok" | "YouTube" | "Instagram" | "Facebook";
+  thumbnail: string; // image url
+  title: string;
+  views: number;
+  likes: number;
+  comments: number;
+  saves: number;
+  shares: number;
+  uploadedAt: string; // ISO
+  length: string; // mm:ss
+  song: string;
+  hashtags: string[];
+};
+
+const videos = [
+    { src: "/videos/video1.mp4" }, // Example with video
+    { src: "/videos/video2.mp4" }, // No video, will show icon
+    { src: "/videos/video1.mp4" }, // Example with video
+    { src: "/videos/video2.mp4" },
+    { src: "/videos/video1.mp4" },
+    { src: "/videos/video2.mp4" },
+  ];
+
+const contentRows: ContentRow[] = [
+  {
+    id: "1",
+    account: "acc_1",
+    platform: "TikTok",
+    thumbnail: "https://img.freepik.com/premium-psd/instagram-reels-youtube-short-video-thumbnail-template-business-promotion_475351-817.jpg",
+    title: "AI edits in 30s – workflow demo",
+    views: 155000,
+    likes: 12300,
+    comments: 540,
+    saves: 1800,
+    shares: 950,
+    uploadedAt: "2025-05-14T10:12:00Z",
+    length: "00:32",
+    song: "Midnight Drive - A. Keys",
+    hashtags: ["#ai", "#videoediting", "#workflow"],
+  },
+  {
+    id: "2",
+    account: "acc_2",
+    platform: "YouTube",
+    thumbnail: "https://img.freepik.com/premium-psd/instagram-reels-youtube-short-video-thumbnail-template-business-promotion_475351-817.jpg",
+    title: "Full tutorial: Color grading with AI",
+    views: 87000,
+    likes: 6400,
+    comments: 310,
+    saves: 740,
+    shares: 120,
+    uploadedAt: "2025-05-11T08:02:00Z",
+    length: "08:41",
+    song: "—",
+    hashtags: ["#tutorial", "#colorgrading"],
+  },
+  {
+    id: "3",
+    account: "acc_3",
+    platform: "Instagram",
+    thumbnail: "https://img.freepik.com/premium-psd/instagram-reels-youtube-short-video-thumbnail-template-business-promotion_475351-817.jpg",
+    title: "Before/After transitions",
+    views: 42000,
+    likes: 5100,
+    comments: 150,
+    saves: 980,
+    shares: 260,
+    uploadedAt: "2025-05-09T15:33:00Z",
+    length: "00:19",
+    song: "City Pop Loop",
+    hashtags: ["#reels", "#transitions"],
+  },
+  {
+    id: "4",
+    account: "acc_4",
+    platform: "TikTok",
+    thumbnail: "https://img.freepik.com/premium-psd/instagram-reels-youtube-short-video-thumbnail-template-business-promotion_475351-817.jpg",
+    title: "How I storyboard with GPT",
+    views: 61000,
+    likes: 3900,
+    comments: 210,
+    saves: 1300,
+    shares: 310,
+    uploadedAt: "2025-05-07T12:05:00Z",
+    length: "00:45",
+    song: "Lo-fi Beat 24",
+    hashtags: ["#storyboard", "#creators"],
+  },
+  {
+    id: "5",
+    account: "acc-5",
+    platform: "YouTube",
+    thumbnail: "https://img.freepik.com/premium-psd/instagram-reels-youtube-short-video-thumbnail-template-business-promotion_475351-817.jpg",
+    title: "Speed ramping like a pro",
+    views: 134000,
+    likes: 10100,
+    comments: 460,
+    saves: 2100,
+    shares: 670,
+    uploadedAt: "2025-05-04T09:00:00Z",
+    length: "06:03",
+    song: "—",
+    hashtags: ["#speedramp", "#tips"],
+  },
 ];
 
-function CustomLineTooltip({
-  active,
-  payload,
-  label,
-}: {
-  active?: boolean;
-  payload?: any[];
-  label?: string;
-}) {
-  if (active && payload && payload.length) {
-    const date = new Date(label || "");
-    const formattedDate = date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    return (
-      <div
-        style={{
-          background: "white",
-          borderRadius: 8,
-          boxShadow: "0 2px 8px #0001",
-          padding: 12,
-          border: "1px solid #eee",
-        }}
-      >
-        <div style={{ fontWeight: 500, marginBottom: 4 }}>{formattedDate}</div>
-        <div style={{ color: "#10b981", fontWeight: 600 }}>
-          Engagement : {payload[0]?.value}%
-        </div>
-      </div>
-    );
-  }
-  return null;
+// Derived helpers
+const avgViews = contentRows.reduce((a, r) => a + r.views, 0) / Math.max(1, contentRows.length);
+function viewsPerformanceLabel(views: number) {
+  if (views >= avgViews * 1.1) return "More views than usual";
+  if (views <= avgViews * 0.9) return "Less views than usual";
+  return "About usual";
 }
+
+// --- Columns ---
+const columns: ColumnDef<ContentRow>[] = [
+  {
+    accessorKey: "account",
+    header: ({ column }) => <TableColumnHeader column={column} title="Account" />,
+    cell: ({ row }) => <span className="font-medium">{row.original.account}</span>,
+    enableSorting: true,
+  },
+  {
+    accessorKey: "platform",
+    header: ({ column }) => <TableColumnHeader column={column} title="Platform" />,
+    cell: ({ row }) => (
+      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs">
+        {row.original.platform}
+      </span>
+    ),
+    enableSorting: true,
+  },
+  {
+    accessorKey: "thumbnail",
+    header: ({ column }) => <TableColumnHeader column={column} title="Thumbnail" />,
+    cell: ({ row }) => (
+      <div className="h-15 w-10 overflow-hidden rounded-md bg-gray-100">
+        {row.original.thumbnail ? (
+          <Image src={row.original.thumbnail} alt={row.original.title} width={80} height={48} className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <MdVideocam className="h-5 w-5 text-gray-400" />
+          </div>
+        )}
+      </div>
+    ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "title",
+    header: ({ column }) => <TableColumnHeader column={column} title="Video Title" />,
+    cell: ({ row }) => <span className="line-clamp-2">{row.original.title}</span>,
+  },
+  {
+    accessorKey: "views",
+    header: ({ column }) => <TableColumnHeader column={column} title="Views" />,
+    cell: ({ row }) => formatNumberShort(row.original.views),
+    enableSorting: true,
+  },
+  {
+    accessorKey: "likes",
+    header: ({ column }) => <TableColumnHeader column={column} title="Likes" />,
+    cell: ({ row }) => formatNumberShort(row.original.likes),
+    enableSorting: true,
+  },
+  {
+    accessorKey: "comments",
+    header: ({ column }) => <TableColumnHeader column={column} title="Comments" />,
+    cell: ({ row }) => formatNumberShort(row.original.comments),
+  },
+  {
+    accessorKey: "saves",
+    header: ({ column }) => <TableColumnHeader column={column} title="Saves" />,
+    cell: ({ row }) => formatNumberShort(row.original.saves),
+  },
+  {
+    accessorKey: "shares",
+    header: ({ column }) => <TableColumnHeader column={column} title="Shares" />,
+    cell: ({ row }) => formatNumberShort(row.original.shares),
+  },
+  {
+    id: "totalEngagement",
+    header: ({ column }) => <TableColumnHeader column={column} title="Total Engagement" />,
+    cell: ({ row }) => {
+      const t = row.original.likes + row.original.comments + row.original.saves + row.original.shares;
+      return formatNumberShort(t);
+    },
+    sortingFn: (a, b) => {
+      const getT = (r: ContentRow) => r.likes + r.comments + r.saves + r.shares;
+      return getT(a.original) - getT(b.original);
+    },
+    enableSorting: true,
+  },
+  {
+    id: "engagementRate",
+    header: ({ column }) => <TableColumnHeader column={column} title="Engagement Rate" />,
+    cell: ({ row }) => {
+      const t = row.original.likes + row.original.comments + row.original.saves + row.original.shares;
+      const rate = row.original.views ? (t / row.original.views) * 100 : 0;
+      return <span>{toPercent(rate)}</span>;
+    },
+    enableSorting: true,
+    sortingFn: (a, b) => {
+      const getRate = (r: ContentRow) => {
+        const t = r.likes + r.comments + r.saves + r.shares;
+        return r.views ? t / r.views : 0;
+      };
+      return getRate(a.original) - getRate(b.original);
+    },
+  },
+  {
+    id: "viewsPerformance",
+    header: ({ column }) => <TableColumnHeader column={column} title="Views Performance" />,
+    cell: ({ row }) => <span className="text-sm">{viewsPerformanceLabel(row.original.views)}</span>,
+    enableSorting: false,
+  },
+  {
+    accessorKey: "uploadedAt",
+    header: ({ column }) => <TableColumnHeader column={column} title="Uploaded Date" />,
+    cell: ({ row }) => new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(new Date(row.original.uploadedAt)),
+    enableSorting: true,
+  },
+  {
+    accessorKey: "length",
+    header: ({ column }) => <TableColumnHeader column={column} title="Length" />,
+    cell: ({ row }) => row.original.length,
+    enableSorting: true,
+  },
+  {
+    accessorKey: "song",
+    header: ({ column }) => <TableColumnHeader column={column} title="Song" />,
+    cell: ({ row }) => row.original.song,
+  },
+  {
+    accessorKey: "hashtags",
+    header: ({ column }) => <TableColumnHeader column={column} title="Hashtags" />,
+    cell: ({ row }) => (
+      <div className="flex flex-wrap gap-1">
+        {row.original.hashtags.map((tag) => (
+          <span key={tag} className="rounded bg-gray-100 px-2 py-0.5 text-xs">{tag}</span>
+        ))}
+      </div>
+    ),
+  },
+];
+
+// --- Stats (kept from your original, reordered lightly) ---
+const stats = [
+  { label: "Views", value: "15.5M" },
+  { label: "Likes", value: "335.3k" },
+  { label: "Comments", value: "34.7k" },
+  { label: "Shares", value: "21.3k" },
+  { label: "Published Videos", value: "27" },
+  { label: "Bookmarks", value: "11.3k" },
+  { label: "Engagement Rate", value: "3%" },
+];
+
+const creators = [
+  { id: 1, name: "Test Creator", profilePicture: "/images/creator1.jpg", handle: "@testcreator", engagementRate: "3.2%" },
+  { id: 2, name: "Test Creator 2", profilePicture: "/images/creator2.jpg", handle: "@testcreator2", engagementRate: "4.5%" },
+  { id: 3, name: "Test Creator 3", profilePicture: "/images/creator3.jpg", handle: "@testcreator3", engagementRate: "2.8%" },
+  { id: 4, name: "Test Creator 4", profilePicture: "/images/creator4.jpg", handle: "@testcreator4", engagementRate: "3.2%" },
+];
 
 const campaignOptions = [
   { key: "all", label: "All Campaigns" },
@@ -309,87 +338,29 @@ const campaignOptions = [
 
 const dateOptions = [
   { key: "today", label: "Today" },
+  { key: "yesterday", label: "Yesterday" },
   { key: "7d", label: "Last 7 Days" },
-  { key: "14d", label: "Last 14 Days" },
   { key: "30d", label: "Last 30 Days" },
-  { key: "90d", label: "Last 90 Days" },
-  { key: "custom", label: "Choose Custom range" },
+  { key: "mtd", label: "Month To Date" },
+  { key: "ytd", label: "Year To Date" },
+  { key: "lastyear", label: "Last Year" },
+  { key: "all", label: "All Time" },
 ];
 
-// Filtering logic
-function filterByCampaignAndDate(
-  data: any[],
-  selectedCampaign: string,
-  selectedDate: string,
-  customRange: { from: string; to: string }
-) {
-  const now = new Date("2025-05-19"); // Use a fixed 'now' for dummy data
-  let fromDate, toDate;
-  if (selectedDate === "custom" && customRange.from && customRange.to) {
-    fromDate = new Date(customRange.from);
-    toDate = new Date(customRange.to);
-  } else {
-    toDate = now;
-    switch (selectedDate) {
-      case "today":
-        fromDate = new Date(now);
-        break;
-      case "7d":
-        fromDate = new Date(now);
-        fromDate.setDate(now.getDate() - 6);
-        break;
-      case "14d":
-        fromDate = new Date(now);
-        fromDate.setDate(now.getDate() - 13);
-        break;
-      case "30d":
-        fromDate = new Date(now);
-        fromDate.setDate(now.getDate() - 29);
-        break;
-      case "90d":
-        fromDate = new Date(now);
-        fromDate.setDate(now.getDate() - 89);
-        break;
-      default:
-        fromDate = new Date("2000-01-01");
-    }
-  }
-  return data.filter((entry: any) => {
-    const entryDate = new Date(entry.date);
-    const campaignMatch =
-      selectedCampaign === "all" || entry.campaign === selectedCampaign;
-    const dateMatch = entryDate >= fromDate && entryDate <= toDate;
-    return campaignMatch && dateMatch;
-  });
-}
-
 export default function Performance() {
-  const [selectedMetric, setSelectedMetric] = useState("likes");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedCreator, setSelectedCreator] = useState(null);
-  const selectedMetricObj =
-    metricOptions.find((opt) => opt.key === selectedMetric) || metricOptions[2];
-
-  // Campaign selector state
-  const [selectedCampaign, setSelectedCampaign] = useState(
-    campaignOptions[0].key
-  );
+  const [selectedCreator, setSelectedCreator] = useState<string | null>(null);
+  const [selectedCampaign, setSelectedCampaign] = useState(campaignOptions[0].key);
   const [campaignDropdown, setCampaignDropdown] = useState(false);
 
-  // Date selector state
-  const [selectedDate, setSelectedDate] = useState(dateOptions[3].key); // Default to 'Last 30 Days'
+  const [selectedDate, setSelectedDate] = useState(dateOptions[0].key);
   const [dateDropdown, setDateDropdown] = useState(false);
   const [customRange, setCustomRange] = useState({ from: "", to: "" });
   const [customRangePickerOpen, setCustomRangePickerOpen] = useState(false);
   const dateDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        dateDropdownRef.current &&
-        !dateDropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dateDropdownRef.current && !dateDropdownRef.current.contains(event.target as Node)) {
         setDateDropdown(false);
         setCustomRangePickerOpen(false);
       }
@@ -397,79 +368,38 @@ export default function Performance() {
     if (dateDropdown || customRangePickerOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dateDropdown, customRangePickerOpen]);
 
-  const filteredInteractionData = filterByCampaignAndDate(
-    interactionData,
-    selectedCampaign,
-    selectedDate,
-    customRange
-  );
-  const filteredEngagementData = filterByCampaignAndDate(
-    engagementData,
-    selectedCampaign,
-    selectedDate,
-    customRange
-  );
-
-  // Add this array at the top of your component, before the return statement
-  const videos = [
-    { src: "/videos/sample1.mp4" }, // Example with video
-    { src: "" }, // No video, will show icon
-    { src: "/videos/sample2.mp4" }, // Example with video
-    { src: "" },
-    { src: "" },
-    { src: "" },
-  ];
-
+  // NOTE: Table header stays fixed because only <tbody> scrolls (see TableBody below)
   return (
     <div className="bg-[#f7f8fa] min-h-screen w-full p-4 md:p-8 playfair-font">
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-7xl">
         {/* Header and Filters */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h1 className="text-2xl font-semibold">Type AI</h1>
           <div className="flex flex-wrap gap-3">
             {/* Campaign Selector */}
             <div className="relative">
               <button
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-md text-sm font-medium min-w-[170px] shadow-sm hover:bg-gray-50 focus:outline-none"
+                className="flex min-w-[170px] items-center gap-2 rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none"
                 onClick={() => setCampaignDropdown((v) => !v)}
                 onBlur={() => setTimeout(() => setCampaignDropdown(false), 150)}
                 tabIndex={0}
                 type="button"
               >
-                <MdGridView className="w-5 h-5" />
-                {
-                  campaignOptions.find((opt) => opt.key === selectedCampaign)
-                    ?.label
-                }
-                <svg
-                  className="w-4 h-4 ml-1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 9l-7 7-7-7"
-                  />
+                <MdGridView className="h-5 w-5" />
+                {campaignOptions.find((opt) => opt.key === selectedCampaign)?.label}
+                <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               {campaignDropdown && (
-                <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-9990 ">
+                <div className="z-[9990] absolute left-0 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg">
                   {campaignOptions.map((option) => (
                     <button
                       key={option.key}
-                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 ${
-                        selectedCampaign === option.key
-                          ? "font-semibold bg-gray-100"
-                          : ""
-                      }`}
+                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 ${selectedCampaign === option.key ? "bg-gray-100 font-semibold" : ""}`}
                       onClick={() => {
                         setSelectedCampaign(option.key);
                         setCampaignDropdown(false);
@@ -482,45 +412,33 @@ export default function Performance() {
                 </div>
               )}
             </div>
+
             {/* Date Selector */}
             <div className="relative" ref={dateDropdownRef}>
               <button
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-md text-sm font-medium min-w-[170px] shadow-sm hover:bg-gray-50 focus:outline-none"
+                className="flex min-w-[170px] items-center justify-between gap-2 rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none"
                 onClick={() => {
                   setDateDropdown((v) => !v);
-                  setCustomRangePickerOpen(false); // Always close custom range picker when opening dropdown
+                  setCustomRangePickerOpen(false);
                 }}
                 tabIndex={0}
                 type="button"
               >
-                <MdCalendarToday className="w-5 h-5" />
-                {selectedDate === "custom" && customRange.from && customRange.to
-                  ? `${customRange.from} - ${customRange.to}`
-                  : dateOptions.find((opt) => opt.key === selectedDate)?.label}
-                <svg
-                  className="w-4 h-4 ml-1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 9l-7 7-7-7"
-                  />
+                <span className="flex items-center gap-2">
+                  <MdCalendarToday className="h-5 w-5" />
+                  {dateOptions.find((opt) => opt.key === selectedDate)?.label}
+                </span>
+                <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
+
               {dateDropdown && (
-                <div className="absolute w-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                  {dateOptions.slice(0, 5).map((option) => (
+                <div className="z-[100] absolute left-0 mt-2 w-56 rounded-md border border-gray-200 bg-white shadow-lg">
+                  {dateOptions.map((option) => (
                     <button
                       key={option.key}
-                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 ${
-                        selectedDate === option.key
-                          ? "font-semibold bg-gray-100"
-                          : ""
-                      }`}
+                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 ${selectedDate === option.key ? "bg-gray-100 font-semibold" : ""}`}
                       onClick={() => {
                         setSelectedDate(option.key);
                         setDateDropdown(false);
@@ -531,281 +449,70 @@ export default function Performance() {
                       {option.label}
                     </button>
                   ))}
-                  <div className="border-t my-1" />
-                  <button
-                    className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 ${
-                      selectedDate === "custom"
-                        ? "font-semibold bg-gray-100"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      setSelectedDate("custom");
-                      setCustomRangePickerOpen(true);
-                    }}
-                    type="button"
-                  >
-                    Choose Custom range
-                  </button>
-                </div>
-              )}
-              {/* Custom Range Picker shown below dropdown, not inside */}
-              {selectedDate === "custom" && customRangePickerOpen && (
-                <div
-                  className="absolute w-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-20 flex flex-col items-center p-4"
-                  style={{ top: "100%" }}
-                >
-                  <div className="flex items-center flex-wrap gap-2 w-full">
-                    <input
-                      type="date"
-                      className="border rounded px-2 py-1 text-sm w-full"
-                      value={customRange.from}
-                      onChange={(e) =>
-                        setCustomRange((r) => ({ ...r, from: e.target.value }))
-                      }
-                    />
-                    <span className="mx-1">-</span>
-                    <input
-                      type="date"
-                      className="border rounded px-2 py-1 text-sm w-full"
-                      value={customRange.to}
-                      onChange={(e) =>
-                        setCustomRange((r) => ({ ...r, to: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <button
-                    className="mt-3 px-4 py-2 bg-violet-600 text-white rounded hover:bg-violet-700 text-sm w-full"
-                    onClick={() => {
-                      setCustomRangePickerOpen(false);
-                      setDateDropdown(false);
-                    }}
-                  >
-                    Apply
-                  </button>
                 </div>
               )}
             </div>
-            {/* Existing filter by accounts button */}
-            <Select
-              selectedKey={selectedCreator || "all"}
-              onSelectionChange={(key: any) => {
-                setSelectedCreator(key);
-              }}
-            >
-              <SelectTrigger className="w-full min-w-[260px] max-w-[340px]">
-                <SelectValue />
-              </SelectTrigger>
+
+            {/* Creator Filter */}
+            <Select selectedKey={selectedCreator || "all"} onSelectionChange={(key: any) => setSelectedCreator(key)}>
+              <SelectTrigger className="w-full min-w-[260px] max-w-[340px]"><SelectValue /></SelectTrigger>
               <SelectPopover>
                 <SelectListBox>
-                  <SelectItem key="all" id="all">
-                    All Creators
-                  </SelectItem>
+                  <SelectItem key="all" id="all">All Creators</SelectItem>
                   {creators.map((creator) => (
-                    <SelectItem
-                      key={creator.id.toString()}
-                      id={creator.id.toString()}
-                    >
+                    <SelectItem key={creator.id.toString()} id={creator.id.toString()}>
                       {creator.name}
                     </SelectItem>
                   ))}
                 </SelectListBox>
               </SelectPopover>
             </Select>
+
+            <div>
+              <GradientButton className="gradient-button" onClick={() => {}}>Sync</GradientButton>
+            </div>
           </div>
         </div>
 
         {/* Stat Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
           {stats.slice(0, 4).map((stat) => (
-            <GridBackground
-              title={stat.value}
-              className="cursor-default"
-              description={stat.label}
-            />
+            <GridBackground key={stat.label} title={stat.value} className="cursor-default" description={stat.label} />
           ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-3">
           {stats.slice(4).map((stat) => (
-            <GridBackground
-              title={stat.value}
-              className="cursor-default"
-              description={stat.label}
-            />
+            <GridBackground key={stat.label} title={stat.value} className="cursor-default" description={stat.label} />
           ))}
         </div>
 
-        {/* Winning Videos & Creators */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <CardSpotlight>
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-semibold text-n900">
-                Winning Videos
-              </h3>
-              <h3 className="text-xl font-semibold text-n900">5</h3>
-            </div>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              How many of this period’s videos are out-performing the pack,
-              shown as both a count and a % of everything you published.
-            </p>
-            <div className="mt-2 text-n900">
-              <span className="text-xl font-medium text-black ml-1">18%</span>
-            </div>
-          </CardSpotlight>
-
-          <CardSpotlight>
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-semibold text-n900">
-                Winning Creators
-              </h3>
-              <h3 className="text-xl font-semibold text-n900">2</h3>
-            </div>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              At a glance, see how many creators are consistently beating the
-              average, expressed as a count and the % of your roster.
-            </p>
-            <div className="mt-2 text-n900">
-              <span className="text-xl font-medium text-black ml-1">66%</span>
-            </div>
-          </CardSpotlight>
-        </div>
-
-        {/* Charts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col">
-            <div className="flex items-center justify-between mb-2">
-              <span className="font-semibold">Interaction metrics</span>
-              <div className="relative">
-                <button
-                  className="flex items-center gap-2 px-4 py-2 bg-[#f7f8fa] border border-gray-200 rounded-md text-sm font-medium min-w-[120px] shadow-sm hover:bg-gray-50 focus:outline-none"
-                  onClick={() => setDropdownOpen((v) => !v)}
-                  onBlur={() => setTimeout(() => setDropdownOpen(false), 150)}
-                  tabIndex={0}
-                  type="button"
-                >
-                  {selectedMetricObj.label}
-                  <svg
-                    className="w-4 h-4 ml-1"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                    {metricOptions.map((option) => (
-                      <button
-                        key={option.key}
-                        className={`flex items-center w-full px-4 py-2 text-left text-sm hover:bg-gray-50 ${
-                          selectedMetric === option.key
-                            ? "font-semibold bg-gray-100"
-                            : ""
-                        }`}
-                        onClick={() => {
-                          setSelectedMetric(option.key);
-                          setDropdownOpen(false);
-                        }}
-                        type="button"
-                      >
-                        {selectedMetric === option.key && (
-                          <svg
-                            className="w-4 h-4 mr-2 text-violet-400"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        )}
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
+        {/* Table (header stays, body scrolls) */}
+        <div className="mb-8 rounded-xl bg-white p-6 shadow-sm">
+          <div className="my-4">
+            <TableProvider columns={columns} data={contentRows} className="min-w-full rounded-lg border">
+              <TableHeader className="">
+                {({ headerGroup }) => (
+                  <TableHeaderGroup key={headerGroup.id} headerGroup={headerGroup}>
+                    {({ header }) => (
+                      <TableHead key={header.id} header={header} className="bg-[#FFA87D] text-black" />
+                    )}
+                  </TableHeaderGroup>
                 )}
-              </div>
-            </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart
-                data={filteredInteractionData}
-                margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis
-                  dataKey="date"
-                  axisLine={false}
-                  tickLine={false}
-                  tickFormatter={(d) => String(new Date(d).getDate())}
-                />
-                <YAxis
-                  tickFormatter={formatNumberShort}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip
-                  content={(props) => (
-                    <CustomBarTooltip
-                      {...props}
-                      selectedMetric={selectedMetric}
-                    />
-                  )}
-                />
-                <Bar
-                  dataKey={selectedMetric}
-                  fill={selectedMetricObj.color}
-                  radius={[6, 6, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col">
-            <div className="flex items-center justify-between mb-2">
-              <span className="font-semibold">Engagement</span>
-            </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart
-                data={filteredEngagementData}
-                margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis
-                  dataKey="date"
-                  axisLine={false}
-                  tickLine={false}
-                  tickFormatter={(d) => String(new Date(d).getDate())}
-                />
-                <YAxis
-                  tickFormatter={(v) => `${v}%`}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip
-                  content={(props) => <CustomLineTooltip {...props} />}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="engagement"
-                  stroke="#10b981"
-                  strokeWidth={3}
-                  dot={{ r: 5 }}
-                  activeDot={{ r: 7 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+              </TableHeader>
+
+              {/* Only the body scrolls */}
+              <TableBody className="max-h-[60vh]">
+                {({ row }) => (
+                  <TableRow key={row.id} row={row}>
+                    {({ cell }) => <TableCell key={cell.id} cell={cell} />}
+                  </TableRow>
+                )}
+              </TableBody>
+            </TableProvider>
           </div>
         </div>
 
-        {/* Content Section (Videos) */}
+        {/* Content cards (kept) */}
         <div className="bg-white rounded-xl p-6 shadow-sm mb-8">
           <span className="font-semibold text-lg mb-4 block">Content</span>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
