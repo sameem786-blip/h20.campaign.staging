@@ -49,10 +49,16 @@ import {
   subMonths,
 } from "date-fns";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, Download, Eye, Pause, Play } from "lucide-react";
 import Image from "next/image";
 
 const platformIcons: Record<ContentRow["platform"], JSX.Element> = {
+  TikTok: <FaTiktok className="h-4 w-4 text-white" />,
+  YouTube: <FaYoutube className="h-4 w-4 text-white" />,
+  Instagram: <FaInstagram className="h-4 w-4 text-white" />,
+  Facebook: <FaFacebook className="h-4 w-4 text-white" />,
+};
+const tablePlatformIcons: Record<ContentRow["platform"], JSX.Element> = {
   TikTok: <FaTiktok className="h-4 w-4 text-black" />,
   YouTube: <FaYoutube className="h-4 w-4 text-red-600" />,
   Instagram: <FaInstagram className="h-4 w-4 text-pink-500" />,
@@ -88,14 +94,21 @@ export type ContentRow = {
   hashtags: string[];
 };
 
-const videos = [
-    { src: "/videos/video1.mp4" }, // Example with video
-    { src: "/videos/video2.mp4" }, // No video, will show icon
-    { src: "/videos/video1.mp4" }, // Example with video
-    { src: "/videos/video2.mp4" },
-    { src: "/videos/video1.mp4" },
-    { src: "/videos/video2.mp4" },
-  ];
+export type VideoCard = {
+  src?: string;
+  creator: string;
+  platform: ContentRow["platform"];
+  views: number;
+};
+
+const videos: VideoCard[] = [
+  { src: "/videos/video1.mp4", creator: "@testcreator", platform: "TikTok", views: 155000 },
+  { src: "/videos/video2.mp4", creator: "@testcreator2", platform: "YouTube", views: 87000 },
+  { src: "/videos/video1.mp4", creator: "@testcreator3", platform: "Instagram", views: 42000 },
+  { src: "/videos/video2.mp4", creator: "@testcreator4", platform: "TikTok", views: 61000 },
+  { src: "/videos/video1.mp4", creator: "@testcreator", platform: "YouTube", views: 134000 },
+  { src: "/videos/video2.mp4", creator: "@testcreator2", platform: "Facebook", views: 23000 },
+];
 
 const contentRows: ContentRow[] = [
   {
@@ -201,7 +214,7 @@ const columns: ColumnDef<ContentRow>[] = [
   header: ({ column }) => <TableColumnHeader column={column} title="Platform" />,
   cell: ({ row }) => (
     <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs">
-      {platformIcons[row.original.platform]}
+      {tablePlatformIcons[row.original.platform]}
     </span>
   ),
   enableSorting: false,
@@ -355,6 +368,116 @@ const dateOptions = [
   { key: "all", label: "All Time" },
 ];
 
+function PlatformBadge({ platform }: { platform: ContentRow["platform"] }) {
+  const base = "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium leading-none";
+  switch (platform) {
+    case "TikTok":
+      return <span className={`${base} bg-black/90 text-white`}>{platformIcons[platform]} TikTok</span>;
+    case "YouTube":
+      return <span className={`${base} bg-red-600 text-white`}>{platformIcons[platform]} YouTube</span>;
+    case "Instagram":
+      return (
+        <span className={`${base} bg-gradient-to-r from-pink-500 via-purple-500 to-yellow-500 text-white`}>
+          {platformIcons[platform]} Instagram
+        </span>
+      );
+    case "Facebook":
+      return <span className={`${base} bg-blue-600 text-white`}>{platformIcons[platform]} Facebook</span>;
+  }
+}
+
+function VideoTile({ video }: { video: VideoCard }) {
+  const ref = useRef<HTMLVideoElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  const togglePlay = () => {
+    const el = ref.current;
+    if (!el) return;
+    if (el.paused) {
+      el.play().catch(() => {});
+      setIsPlaying(true);
+    } else {
+      el.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    el.addEventListener("play", onPlay);
+    el.addEventListener("pause", onPause);
+    return () => {
+      el.removeEventListener("play", onPlay);
+      el.removeEventListener("pause", onPause);
+    };
+  }, []);
+
+  return (
+    <div
+      className="relative aspect-[3/4] overflow-hidden rounded-xl bg-gray-100"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {video.src ? (
+        <video ref={ref} src={video.src} className="h-full w-full object-cover" playsInline />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center">
+          <MdVideocam className="h-10 w-10 text-gray-400" />
+        </div>
+      )}
+
+      {/* Center play/pause */}
+      <button
+        type="button"
+        onClick={togglePlay}
+        className={
+          "absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/65 p-4 text-white shadow transition-opacity " +
+          (hovered || !isPlaying ? "opacity-100" : "opacity-0")
+        }
+        aria-label={isPlaying ? "Pause" : "Play"}
+      >
+        {isPlaying ? (
+          <Pause />
+        ) : (
+          
+          <Play />
+        )}
+      </button>
+
+      {/* Bottom-left overlay with creator + platform + views + download */}
+      <div className="absolute inset-x-0 bottom-0 z-10 p-3">
+        <div className="flex items-center gap-3 rounded-lg bg-black/45 px-3 py-2 text-white backdrop-blur">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold leading-tight">{video.creator}</p>
+            <div className="mt-1 flex items-center gap-2">
+              <PlatformBadge platform={video.platform} />
+              <span className="inline-flex items-center gap-1 text-xs">
+                <Eye className="h-3.5 w-3.5" /> {formatNumberShort(video.views)}
+              </span>
+            </div>
+          </div>
+          {/* Download action living inside the overlay container */}
+          {video.src && (
+            <a
+              href={video.src}
+              download
+              className="inline-flex items-center gap-1 rounded-md bg-white/15 px-2 py-1 text-xs font-medium text-white hover:bg-white/25"
+              onClick={(e) => e.stopPropagation()}
+              aria-label="Download video"
+            >
+              <Download className="h-3.5 w-3.5" /> Download
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Performance() {
   const [selectedCreator, setSelectedCreator] = useState<string | null>(null);
   const [selectedCampaign, setSelectedCampaign] = useState(campaignOptions[0].key);
@@ -365,6 +488,32 @@ export default function Performance() {
   const [customRange, setCustomRange] = useState({ from: "", to: "" });
   const [customRangePickerOpen, setCustomRangePickerOpen] = useState(false);
   const dateDropdownRef = useRef<HTMLDivElement>(null);
+
+  function PlatformBadge({ platform }: { platform: ContentRow["platform"] }) {
+  // why: color cues speed up scanning and match brand expectations
+  const base =
+    "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium leading-none";
+  switch (platform) {
+    case "TikTok":
+      return (
+        <span className={`${base} bg-black/90 text-white`}>{platformIcons[platform]} TikTok</span>
+      );
+    case "YouTube":
+      return (
+        <span className={`${base} bg-red-600 text-white`}>{platformIcons[platform]} YouTube</span>
+      );
+    case "Instagram":
+      return (
+        <span className={`${base} bg-gradient-to-r from-pink-500 via-purple-500 to-yellow-500 text-white`}>{
+          platformIcons[platform]
+        } Instagram</span>
+      );
+    case "Facebook":
+      return (
+        <span className={`${base} bg-blue-600 text-white`}>{platformIcons[platform]} Facebook</span>
+      );
+  }
+}
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -526,20 +675,7 @@ export default function Performance() {
           <span className="font-semibold text-lg mb-4 block">Content</span>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {videos.map((video, idx) => (
-              <div
-                key={idx}
-                className="flex flex-col items-center justify-center aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden"
-              >
-                {video.src ? (
-                  <video
-                    src={video.src}
-                    controls
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <MdVideocam className="w-10 h-10 text-gray-400" />
-                )}
-              </div>
+              <VideoTile key={idx} video={video} />
             ))}
           </div>
         </div>
