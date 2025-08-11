@@ -337,44 +337,11 @@ export default function CampaignAnalysisPage() {
                   </div>
                 </div>
               )}
-
-            {viewPersona1Creators && (
+              <div className="max-w-6xl mx-auto">
+                {viewPersona1Creators && (
               <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center justify-items-center mx-10">
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center justify-items-center mx-10">
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
+              <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 justify-center justify-items-center mx-10 my-6">
+                
                 <HolographicCard className="w-full flex justify-center items-center">
                   <Image
                     src={creatorImage || ""}
@@ -392,7 +359,7 @@ export default function CampaignAnalysisPage() {
                   />
                 </HolographicCard>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center justify-items-center mx-10">
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 justify-center justify-items-center mx-10">
                 <HolographicCard className="w-full flex justify-center items-center">
                   <Image
                     src={creatorImage || ""}
@@ -409,55 +376,14 @@ export default function CampaignAnalysisPage() {
                     className="object-cover opacity-80 rounded-lg"
                   />
                 </HolographicCard>
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
+                
               </div>
               </>
             )}
-            {viewPersona2Creators && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center justify-items-center mx-10">
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
-              </div>
-            )}
-            {viewPersona3Creators && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center justify-items-center mx-10">
-                <HolographicCard className="w-full flex justify-center items-center">
-                  <Image
-                    src={creatorImage || ""}
-                    alt="Creator"
-                    fill
-                    className="object-cover opacity-80 rounded-lg"
-                  />
-                </HolographicCard>
+                {viewPersona2Creators && (
+              <>
+              <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 justify-center justify-items-center mx-10 my-6">
+                
                 <HolographicCard className="w-full flex justify-center items-center">
                   <Image
                     src={creatorImage || ""}
@@ -475,7 +401,73 @@ export default function CampaignAnalysisPage() {
                   />
                 </HolographicCard>
               </div>
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 justify-center justify-items-center mx-10">
+                <HolographicCard className="w-full flex justify-center items-center">
+                  <Image
+                    src={creatorImage || ""}
+                    alt="Creator"
+                    fill
+                    className="object-cover opacity-80 rounded-lg"
+                  />
+                </HolographicCard>
+                <HolographicCard className="w-full flex justify-center items-center">
+                  <Image
+                    src={creatorImage || ""}
+                    alt="Creator"
+                    fill
+                    className="object-cover opacity-80 rounded-lg"
+                  />
+                </HolographicCard>
+                
+              </div>
+              </>
             )}
+                {viewPersona3Creators && (
+              <>
+              <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 justify-center justify-items-center mx-10 my-6">
+                
+                <HolographicCard className="w-full flex justify-center items-center">
+                  <Image
+                    src={creatorImage || ""}
+                    alt="Creator"
+                    fill
+                    className="object-cover opacity-80 rounded-lg"
+                  />
+                </HolographicCard>
+                <HolographicCard className="w-full flex justify-center items-center">
+                  <Image
+                    src={creatorImage || ""}
+                    alt="Creator"
+                    fill
+                    className="object-cover opacity-80 rounded-lg"
+                  />
+                </HolographicCard>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 justify-center justify-items-center mx-10">
+                <HolographicCard className="w-full flex justify-center items-center">
+                  <Image
+                    src={creatorImage || ""}
+                    alt="Creator"
+                    fill
+                    className="object-cover opacity-80 rounded-lg"
+                  />
+                </HolographicCard>
+                <HolographicCard className="w-full flex justify-center items-center">
+                  <Image
+                    src={creatorImage || ""}
+                    alt="Creator"
+                    fill
+                    className="object-cover opacity-80 rounded-lg"
+                  />
+                </HolographicCard>
+                
+              </div>
+              </>
+            )}
+                </div>
+
+            
+            
 
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-6">
