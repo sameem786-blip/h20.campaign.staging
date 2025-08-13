@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Creator Agent Campaign Dashboard",
+  title: "Creator Agent Campaign Dashboard.",
   description: "Manage your creator campaigns and conversations",
 };
 
