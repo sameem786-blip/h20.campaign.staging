@@ -93,8 +93,8 @@ export const SortingControls: React.FC<SortingControlsProps> = ({
               onClick={() => handleNavigationTabChange('new')}
               className={`relative text-xs ${
                 activeNavigationTab === 'new'
-                  ? 'bg-gray-600 text-white hover:bg-gray-500'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'bg-p400 color-p600 hover:bg-p200'
+                  : 'color-p600 hover:color-p600'
               }`}
             >
               New
@@ -111,8 +111,8 @@ export const SortingControls: React.FC<SortingControlsProps> = ({
               onClick={() => handleNavigationTabChange('undecided')}
               className={`relative text-xs ${
                 activeNavigationTab === 'undecided'
-                  ? 'bg-gray-600 text-white hover:bg-gray-500'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'bg-p400 color-p600 hover:bg-p200'
+                  : 'color-p600 hover:color-p600'
               }`}
             >
               Undecided
@@ -129,8 +129,8 @@ export const SortingControls: React.FC<SortingControlsProps> = ({
               onClick={() => handleNavigationTabChange('favorite')}
               className={`relative text-xs ${
                 activeNavigationTab === 'favorite'
-                  ? 'bg-gray-600 text-white hover:bg-gray-500'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'bg-p400 color-p600 hover:bg-p200'
+                  : 'color-p600 hover:color-p600'
               }`}
             >
               Favorite
@@ -147,8 +147,8 @@ export const SortingControls: React.FC<SortingControlsProps> = ({
               onClick={() => handleNavigationTabChange('passed')}
               className={`relative text-xs ${
                 activeNavigationTab === 'passed'
-                  ? 'bg-gray-600 text-white hover:bg-gray-500'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'bg-p400 color-p600 hover:bg-p200'
+                  : 'color-p600 hover:color-p600'
               }`}
             >
               Passed
@@ -177,7 +177,7 @@ export const SortingControls: React.FC<SortingControlsProps> = ({
                 >
                   <Button
                     onClick={() => handleSortMetricChange(option.key)}
-                    className={`relative transition-all duration-300 px-6 py-3 rounded-full font-semibold text-base ${
+                    className={`relative transition-all duration-300 px-6 py-3 rounded-md font-semibold text-base ${
                       isActive
                         ? `${option.bgColor} shadow-xl transform scale-110`
                         : `bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border border-gray-600`
@@ -194,7 +194,7 @@ export const SortingControls: React.FC<SortingControlsProps> = ({
           <div className="absolute right-4 flex items-center gap-3">
             {remainingCount !== undefined && remainingCount >= 0 && (
               <motion.div
-                className="bg-gradient-to-r from-p500 to-p600 text-white text-sm font-bold px-3 py-2 rounded-full shadow-lg border-2 border-white"
+                className="bg-gradient-to-r from-p500 to-p600 text-white text-sm font-bold px-3 py-2 rounded-md shadow-lg border-2 border-white"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={
                   shouldPulse

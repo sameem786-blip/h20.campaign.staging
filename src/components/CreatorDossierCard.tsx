@@ -7,6 +7,11 @@ import { Input } from './ui/input';
 import { ChevronDown, ShoppingCart, MessageCircle, Send, Heart, X as XIcon, Meh } from 'lucide-react';
 import { Creator } from '../types/creator';
 import { cn } from '@/lib/utils';
+import { GridBackground } from './ui/glowing-card';
+import { GradientButton } from './ui/gradient-button';
+import { CardSpotlight } from './ui/card-spotlight';
+import { ExpandingIconButton } from './expanding-button';
+
 
 interface CreatorDossierCardProps {
   creator: Creator;
@@ -128,12 +133,12 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
   };
 
   return (
-    <div className="w-full h-screen flex flex-col perspective-1000 relative overflow-hidden">
+    <div className="w-full h-screen flex flex-col perspective-1000 relative overflow-auto">
       {/* Card stack - multiple cards underneath for depth */}
       {[2, 1, 0].map((depth) => (
         <motion.div
           key={depth}
-          className="absolute inset-0 mx-4 my-4"
+          className="absolute inset-0 mx-4 my-4 overflow-auto"
           style={{
             zIndex: depth === 0 ? 10 : 5 - depth,
             scale: 1 - (depth * 0.02),
@@ -224,19 +229,63 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                           YouTube
                         </motion.p>
                       </div>
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Button
-                          onClick={onBuy}
-                          size="lg"
-                          className="gradient-button text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 text-lg"
-                        >
-                          <ShoppingCart className="h-6 w-6 mr-3" />
-                          Buy Now
-                        </Button>
-                      </motion.div>
+                      <motion.div className="flex items-center gap-3" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+  {/* Buy Now (kept as-is; you could also make it expand) */}
+  {/* <Button
+    onClick={onBuy}
+    size="lg"
+    className="gradient-button text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 text-lg"
+  >
+    <ShoppingCart className="h-6 w-6 mr-3" />
+    Buy Now
+  </Button> */}
+
+  {/* Pass */}
+  <ExpandingIconButton
+    onClick={onBuy}
+    disabled={isTransitioning}
+    icon={<ShoppingCart className="h-6 w-6" />}
+    label="Buy Now"
+    className={cn(
+      "gradient-button border border-white", // your gradient util
+      isTransitioning ? "opacity-50 cursor-not-allowed" : "hover:scale-110"
+    )}
+  />
+  <ExpandingIconButton
+    onClick={() => handleDecisionClick("pass")}
+    disabled={isTransitioning}
+    icon={<XIcon className="h-6 w-6" />}
+    label="Pass"
+    className={cn(
+      "bg-red-500 hover:bg-red-400 border border-white",
+      isTransitioning ? "opacity-50 cursor-not-allowed" : "hover:scale-110"
+    )}
+  />
+
+  {/* Not Sure */}
+  <ExpandingIconButton
+    onClick={() => handleDecisionClick("maybe")}
+    disabled={isTransitioning}
+    icon={<Meh className="h-6 w-6" />}
+    label="Not sure"
+    className={cn(
+      "bg-yellow-500 hover:bg-yellow-400 border border-white",
+      isTransitioning ? "opacity-50 cursor-not-allowed" : "hover:scale-110"
+    )}
+  />
+
+  {/* Favorite (keep your gradient) */}
+  <ExpandingIconButton
+    onClick={() => handleDecisionClick("favorite")}
+    disabled={isTransitioning}
+    icon={<Heart className="h-6 w-6" />}
+    label="Favorite"
+    className={cn(
+      "gradient-button border border-white", // your gradient util
+      isTransitioning ? "opacity-50 cursor-not-allowed" : "hover:scale-110"
+    )}
+  />
+</motion.div>
                     </div>
 
                     {/* Key Metrics - Reordered based on active sort metric */}
@@ -265,14 +314,32 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                           return (
                             <motion.div
                               key={metric.label}
-                              className={`text-center p-3 rounded-xl backdrop-blur shadow-md transition-all duration-300 ${
+                              className={`text-center rounded-xl backdrop-blur shadow-md transition-all duration-300  ${
                                 isActive
                                   ? `${metric.bgColor} ${metric.borderColor} border-2 shadow-lg transform scale-105`
                                   : 'bg-white/80 border border-gray-200'
                               }`}
                               transition={{ delay: index * 0.1 }}
                             >
-                              <div className={`text-2xl font-bold ${metric.color} mb-1`}>
+                              {/* <div className={`text-2xl font-bold ${metric.color} mb-1`}>
+                                {metric.value}
+                              </div>
+                              <div className={`text-sm mb-1 ${isActive ? 'text-gray-800 font-semibold' : 'text-gray-600'}`}>
+                                {metric.label}
+                              </div>
+                              <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                isActive
+                                  ? `${metric.color} bg-white shadow-sm`
+                                  : 'text-gray-500 bg-gray-100'
+                              }`}>
+                                {metric.rank === "N/A" ? "N/A" : `Rank #${metric.rank}`}
+                              </div> */}
+
+                              <GridBackground
+                                                  
+                                                  className="cursor-default overflow-hidden"
+                                                                                                  >
+                                                  <div className={`text-2xl font-bold ${metric.color} mb-1`}>
                                 {metric.value}
                               </div>
                               <div className={`text-sm mb-1 ${isActive ? 'text-gray-800 font-semibold' : 'text-gray-600'}`}>
@@ -285,6 +352,7 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                               }`}>
                                 {metric.rank === "N/A" ? "N/A" : `Rank #${metric.rank}`}
                               </div>
+                                                  </GridBackground>
                             </motion.div>
                           );
                         });
@@ -298,7 +366,7 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
                     >
-                      <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-200">
+                      <p className="text-sm text-p600 leading-relaxed bg-p200 p-4 rounded-lg border border-p600 shadow-md">
                         YouTube channel focused almost entirely on Minecraft gameplay Shorts with frequent, high-view highlight-style videos and 915K subscribers, signaling a clear gaming focus and credible reach for partnerships.
                       </p>
                     </motion.div>
@@ -313,25 +381,30 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                       <h3 className="text-2xl font-semibold mb-6">Recent Videos</h3>
                       <div className="grid grid-cols-3 gap-4">
                         {creator.videos.slice(0, 3).map((video, index) => (
-                          <motion.div
-                            key={video.id}
-                            className="space-y-3"
-                            transition={{ delay: index * 0.05 }}
-                          >
-                            <div className="relative overflow-hidden rounded-lg">
-                              <img
-                                src={video.thumbnail}
-                                alt={video.title}
-                                className="w-full aspect-square object-cover"
-                              />
-                            </div>
-                            <h4 className="font-medium text-sm line-clamp-2">
-                              {video.title}
-                            </h4>
-                            <p className="text-xs text-gray-500">{video.views} views</p>
-                            <p className="text-xs text-gray-500">{video.posted}</p>
-                          </motion.div>
-                        ))}
+  <motion.div
+    key={video.id}
+    initial={{ opacity: 0, y: 8 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.05, duration: 0.25 }}
+    className="space-y-3 rounded-xl border bg-white p-3 shadow-md hover:shadow-lg transition-shadow"
+  >
+    <div className="relative overflow-hidden rounded-lg">
+      <img
+        src={video.thumbnail}
+        alt={video.title}
+        className="w-full aspect-square object-cover"
+      />
+    </div>
+
+    <h4 className="font-medium text-sm line-clamp-2">
+      {video.title}
+    </h4>
+
+    <p className="text-xs text-gray-500">{video.views} views</p>
+    <p className="text-xs text-gray-500">{video.posted}</p>
+  </motion.div>
+))}
+
                       </div>
                     </motion.div>
 
@@ -356,16 +429,21 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                           { label: "Most Viewed", value: creator.metrics.detailed.most_viewed },
                           { label: "Total Views", value: creator.metrics.detailed.total_views }
                         ].map((stat, index) => (
-                          <motion.div
-                            key={stat.label}
-                            className="bg-gradient-to-br from-white to-gray-100 p-4 rounded-lg border border-gray-200"
-                            transition={{ delay: index * 0.05 }}
+                          // <motion.div
+                          //   key={stat.label}
+                          //   className="bg-gradient-to-br from-white to-gray-100 p-4 rounded-lg border border-gray-200"
+                          //   transition={{ delay: index * 0.05 }}
+                          // >
+                          <CardSpotlight
+                            key={index}
+                            className="h-full min-h-[5rem] w-full grid grid-rows-[1fr_auto] border-p600 dark:border-p600 p-5"
                           >
                             <span className="text-gray-600 text-sm block mb-1">{stat.label}:</span>
                             <span className="font-medium text-lg">
                               {stat.value}
                             </span>
-                          </motion.div>
+                            </CardSpotlight>
+                          // </motion.div>
                         ))}
                       </div>
                     </motion.div>
@@ -383,17 +461,22 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                       </Badge>
                       <div className="grid grid-cols-2 gap-4">
                         {creator.rates.packages.slice(0, 2).map((pkg, index) => (
-                          <motion.div
+                          // <motion.div
+                          //   key={index}
+                          //   className="border-2 rounded-xl p-4 bg-gradient-to-br from-gray-50 to-white border-gray-200"
+                          //   transition={{ delay: index * 0.1 }}
+                          // >
+                          <CardSpotlight
                             key={index}
-                            className="border-2 rounded-xl p-4 bg-gradient-to-br from-gray-50 to-white border-gray-200"
-                            transition={{ delay: index * 0.1 }}
+                            className="h-full min-h-[5rem] w-full grid grid-rows-[1fr_auto] border-p600 dark:border-p600 p-5"
                           >
                             <h4 className="font-medium text-gray-900 mb-2 text-lg">{pkg.title}</h4>
                             <p className="text-sm text-gray-600 mb-2">{pkg.description}</p>
                             <p className="text-2xl font-bold text-green-600">
                               {pkg.price}
                             </p>
-                          </motion.div>
+                            </CardSpotlight>
+                          // </motion.div>
                         ))}
                       </div>
                     </motion.div>
@@ -461,22 +544,34 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                             className="overflow-hidden"
                           >
                             <div className="h-32 overflow-y-auto space-y-3 pr-2">
-                              {creator.conversation.history.map((message, index) => (
-                                <div
-                                  key={index}
-                                  className={cn(
-                                    "p-4 rounded-lg shadow-sm max-w-[70%]",
-                                    message.author === "Our Team"
-                                      ? "bg-gradient-to-r from-blue-100 to-blue-50 text-blue-900 ml-auto"
-                                      : "bg-gradient-to-r from-gray-100 to-gray-50 text-gray-900"
-                                  )}
-                                >
-                                  <div className="text-xs text-gray-500 mb-2">
-                                    {message.author} • {message.timestamp}
-                                  </div>
-                                  <p className="text-sm leading-relaxed">{message.body}</p>
-                                </div>
-                              ))}
+                              {creator.conversation.history.map((message, index) => {
+  const inbound = message.author !== "Our Team"; // creator vs our team
+  return (
+    <div
+      key={index}
+      className={cn(
+        "p-2 rounded text-xs border-l-4",
+        inbound ? "bg-p50 border-p200" : "bg-[#FFC4A5] border-p600",
+        // keep alignment: creator left, our team right (optional)
+        inbound ? "" : "ml-auto max-w-[70%]"
+      )}
+    >
+      <div className="flex justify-between mb-1">
+        {inbound ? (
+          <span className="font-semibold text-xs">Creator</span>
+        ) : (
+          <span className="font-medium text-xs">Our Team</span>
+        )}
+        <span className="font-light text-xs text-gray-500">
+          {/* Use your formatter if available; else raw */}
+          {typeof formatDate === "function" ? formatDate(message.timestamp) : message.timestamp}
+        </span>
+      </div>
+      <p className="font-normal text-xs text-gray-700">{message.body}</p>
+    </div>
+  );
+})}
+
                             </div>
                           </motion.div>
                         )}
@@ -486,7 +581,7 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                 </div>
 
                 {/* Action Buttons - Centered at bottom */}
-                <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 z-10">
+                {/* <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 z-10">
                   <motion.div
                     className="flex gap-6 bg-white/20 backdrop-blur-md rounded-full px-8 py-4 shadow-lg border border-white/30"
                     initial={{ opacity: 0, y: 30 }}
@@ -536,7 +631,7 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                       <p className="text-sm text-gray-600">Favorite</p>
                     </div>
                   </motion.div>
-                </div>
+                </div> */}
               </Card>
             </motion.div>
           ) : (

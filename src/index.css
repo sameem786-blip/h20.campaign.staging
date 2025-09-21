@@ -183,3 +183,371 @@
     --stop-5: 86%;
   }
 }
+
+@keyframes border-follow {
+  0% {
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  25% {
+    left: 100%;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    left: 100%;
+    top: 100%;
+    transform: translate(-50%, -50%);
+  }
+  75% {
+    left: 0;
+    top: 100%;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes color-change {
+  0% {
+    color: #3b82f6; 
+  }
+  33% {
+    color: #ef4444;
+  }
+  66% {
+    color: #22c55e;
+  }
+  100% {
+    color: #3b82f6; 
+  }
+}
+
+@keyframes border-color-change {
+  0% {
+    border-color: #3b82f6; 
+  }
+  33% {
+    border-color: #ef4444;
+  }
+  66% {
+    border-color: #22c55e;
+  }
+  100% {
+    border-color: #3b82f6; 
+  }
+}
+
+@keyframes border-follow {
+  0% {
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  25% {
+    left: 100%;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    left: 100%;
+    top: 100%;
+    transform: translate(-50%, -50%);
+  }
+  75% {
+    left: 0;
+    top: 100%;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes color-change {
+  0% {
+    color: #1c1c1e;
+  }
+  25% {
+    color: #e3532c;
+  }
+  50% {
+    color: #ffa87d;
+  }
+  75% {
+    color: #fff6f1;
+  }
+  100% {
+    color: #1c1c1e;
+  }
+}
+
+@keyframes border-color-change {
+  0% {
+    border-color: #1c1c1e;
+  }
+  25% {
+    border-color: #e3532c;
+  }
+  50% {
+    border-color: #ffa87d;
+  }
+  75% {
+    border-color: #fff6f1;
+  }
+  100% {
+    border-color: #1c1c1e;
+  }
+}
+
+@layer base {
+  @property --pos-x {
+    syntax: "<percentage>";
+    initial-value: 11.14%;
+    inherits: false;
+  }
+  @property --pos-y {
+    syntax: "<percentage>";
+    initial-value: 140%;
+    inherits: false;
+  }
+  @property --spread-x {
+    syntax: "<percentage>";
+    initial-value: 150%;
+    inherits: false;
+  }
+  @property --spread-y {
+    syntax: "<percentage>";
+    initial-value: 180.06%;
+    inherits: false;
+  }
+  @property --color-1 {
+    syntax: "<color>";
+    initial-value: #000;
+    inherits: false;
+  }
+  @property --color-2 {
+    syntax: "<color>";
+    initial-value: #08012c;
+    inherits: false;
+  }
+  @property --color-3 {
+    syntax: "<color>";
+    initial-value: #4e1e40;
+    inherits: false;
+  }
+  @property --color-4 {
+    syntax: "<color>";
+    initial-value: #70464e;
+    inherits: false;
+  }
+  @property --color-5 {
+    syntax: "<color>";
+    initial-value: #88394c;
+    inherits: false;
+  }
+  @property --border-angle {
+    syntax: "<angle>";
+    initial-value: 20deg;
+    inherits: true;
+  }
+  @property --border-color-1 {
+    syntax: "<color>";
+    initial-value: hsla(340, 75%, 60%, 0.2);
+    inherits: true;
+  }
+  @property --border-color-2 {
+    syntax: "<color>";
+    initial-value: hsla(340, 75%, 40%, 0.75);
+    inherits: true;
+  }
+  @property --stop-1 {
+    syntax: "<percentage>";
+    initial-value: 37.35%;
+    inherits: false;
+  }
+  @property --stop-2 {
+    syntax: "<percentage>";
+    initial-value: 61.36%;
+    inherits: false;
+  }
+  @property --stop-3 {
+    syntax: "<percentage>";
+    initial-value: 78.42%;
+    inherits: false;
+  }
+  @property --stop-4 {
+    syntax: "<percentage>";
+    initial-value: 89.52%;
+    inherits: false;
+  }
+  @property --stop-5 {
+    syntax: "<percentage>";
+    initial-value: 100%;
+    inherits: false;
+  }
+}
+
+@layer components {
+  .gradient-button {
+    @apply relative appearance-none cursor-pointer;
+    background: radial-gradient(
+      var(--spread-x) var(--spread-y) at var(--pos-x) var(--pos-y),
+      var(--color-1) var(--stop-1),
+      var(--color-2) var(--stop-2),
+      var(--color-3) var(--stop-3),
+      var(--color-4) var(--stop-4),
+      var(--color-5) var(--stop-5)
+    );
+    transition: --pos-x 0.5s, --pos-y 0.5s, --spread-x 0.5s, --spread-y 0.5s,
+      --color-1 0.5s, --color-2 0.5s, --color-3 0.5s, --color-4 0.5s,
+      --color-5 0.5s, --border-angle 0.5s, --border-color-1 0.5s,
+      --border-color-2 0.5s, --stop-1 0.5s, --stop-2 0.5s, --stop-3 0.5s,
+      --stop-4 0.5s, --stop-5 0.5s;
+  }
+  .gradient-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      var(--border-angle),
+      var(--border-color-1),
+      var(--border-color-2)
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .gradient-button:hover {
+    --pos-x: 0%;
+    --pos-y: 91.51%;
+    --spread-x: 120.24%;
+    --spread-y: 103.18%;
+
+    --color-1: #ffc4a5;
+    --color-2: #ffa87d;
+    --color-3: #ff9a63;
+    --color-4: #e3532c;
+    --color-5: #000;
+    --border-angle: 190deg;
+    --border-color-1: hsla(340, 78%, 90%, 0.1);
+    --border-color-2: hsla(340, 75%, 90%, 0.6);
+    --stop-1: 0%;
+    --stop-2: 8.8%;
+    --stop-3: 21.44%;
+    --stop-4: 71.34%;
+    --stop-5: 85.76%;
+  }
+  .gradient-button-variant {
+    --color-1: #000022;
+    --color-2: #1f3f6d;
+    --color-3: #469396;
+    --color-4: #f1ffa5;
+    --border-angle: 200deg;
+    --border-color-1: hsla(320, 75%, 90%, 0.6);
+    --border-color-2: hsla(320, 50%, 90%, 0.15);
+  }
+  .gradient-button-variant:hover {
+    --pos-x: 0%;
+    --pos-y: 95.51%;
+    --spread-x: 110.24%;
+    --spread-y: 110.2%;
+    --color-1: #000020;
+    --color-2: #f1ffa5;
+    --color-3: #469396;
+    --color-4: #1f3f6d;
+    --color-5: #000;
+    --stop-1: 0%;
+    --stop-2: 10%;
+    --stop-3: 35.44%;
+    --stop-4: 71.34%;
+    --stop-5: 90.76%;
+    --border-angle: 210deg;
+    --border-color-1: hsla(320, 75%, 90%, 0.2);
+    --border-color-2: hsla(320, 50%, 90%, 0.75);
+  }
+}
+
+[data-slot="button"], 
+[data-slot="button"] * {
+  cursor: pointer !important;
+}
+
+.color-p500 {
+  color: #ff9a63;
+}
+.bg-p500 {
+  background-color: #ff9a63;
+}
+.border-p500 {
+  border-color: #ff9a63;
+}
+
+.color-p600 {
+  color: #e3532c !important;
+}
+.bg-p600 {
+  background-color: #e3532c;
+}
+.border-p600 {
+  border-color: #e3532c;
+}
+
+.color-p400 {
+  color: #ffa87d;
+}
+.bg-p400 {
+  background-color: #ffa87d;
+}
+.border-p400 {
+  border-color: #ffa87d;
+}
+
+.color-p200 {
+  color: #ffc4a5;
+}
+.bg-p200 {
+  background-color: #ffc4a5;
+}
+.border-p200 {
+  border-color: #ffc4a5;
+}
+
+.color-p50 {
+  color: #fff6f1;
+}
+.bg-p50 {
+  background-color: #fff6f1;
+}
+.border-p50 {
+  border-color: #fff6f1;
+}
+
+/* Neutral Colors */
+.color-n900 {
+  color: #1c1c1e;
+}
+.bg-n900 {
+  background-color: #1c1c1e;
+}
+.border-n900 {
+  border-color: #1c1c1e;
+}
+
+.color-n000 {
+  color: #ffffff;
+}
+.bg-n000 {
+  background-color: #ffffff;
+}
+.border-n000 {
+  border-color: #ffffff;
+}
