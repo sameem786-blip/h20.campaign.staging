@@ -1,17 +1,54 @@
-import { ConversationStageSlug } from './campaign';
+export interface Creator {
+  id: string;
+  handle: string;
+  avatar: string;
+  metrics: {
+    summary: {
+      views: { amount: string; rank: number };
+      rate: { amount: string; rank: number };
+      cpm: { amount: string; rank: number };
+    };
+    detailed: {
+      followers: string;
+      brand_fit: string;
+      median_views: string;
+      mean_views: string;
+      most_viewed: string;
+      total_views: string;
+    };
+  };
+  rates: {
+    status: string;
+    packages: Array<{
+      title: string;
+      description: string;
+      price: string;
+    }>;
+  };
+  videos: Array<{
+    id: string;
+    title: string;
+    thumbnail: string;
+    posted: string;
+    views: string;
+  }>;
+  conversation: {
+    summary: string;
+    history: Array<{
+      author: "Our Team" | "Creator";
+      timestamp: string;
+      body: string;
+    }>;
+  };
+}
 
-export type Creator = {
-  id: number
-  creator_campaign_id: number
-  conversation_id: number
-  username: string
-  stage: ConversationStageSlug
-  screenshot_path: string | null
-  core_platform: string | null
-  evaluation_score: number | null
-  platform_info: {
-    followers: number | null
-    bio: string | null
-    video_analysis: Record<string, unknown> | null
-  } | null
+export interface ProgressData {
+  current: number;
+  total: number;
+}
+
+export interface DecisionCounts {
+  pass: number;
+  maybe: number;
+  favorite: number;
 }

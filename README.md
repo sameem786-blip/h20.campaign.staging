@@ -1,84 +1,107 @@
-# Email Agent UI
+# Creator Dossier Hub
 
-A UI for displaying email threads with influencers, featuring AI-suggested responses.
+A dynamic, interactive interface for evaluating creators with progressive disclosure functionality. Built with React, TypeScript, and Framer Motion.
 
-## Features
+## 🎯 Features
 
-- Display cards of email threads with influencer names and avatars
-- View detailed email conversations from newest to oldest
-- View AI-suggested responses with metadata
-- Edit and approve AI-suggested responses
-- Integration with Supabase for data storage
+### Progressive Disclosure Pattern
+- **Clean Summary View**: Key metrics (Views, Rate, CPM) always visible
+- **Expandable Sections**: 4 detailed sections that expand on demand
+- **Smooth Animations**: Framer Motion powered transitions
 
-## Getting Started
+### Three-Tier Architecture
+1. **Progress Indicator** (top): Shows current position "Card 5 of 265"
+2. **Creator Dossier Card** (center): Main interactive expandable card
+3. **Decision Hub** (bottom): Fixed action buttons with real-time counters
 
-1. Clone the repository
-2. Install dependencies:
+### Interactive Elements
+- ✅ Expandable stats, rates, conversation history, and interaction sections
+- ✅ Chat-like conversation display
+- ✅ Creator interaction form with message input
+- ✅ Pass/Maybe/Favorite decisions with counters
+- ✅ Responsive design for mobile and desktop
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
+# Install dependencies
 npm install
-```
 
-3. Configure your environment variables:
-   Create a `.env.local` file in the root directory with the following variables:
-
-```
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-4. Run the development server:
-
-```bash
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+## 🏗️ Project Structure
 
-## Data Structure
-
-The application expects data in the Supabase tables to have the following structure:
-
-### Agent Runs
-
-```json
-{
-  "id": 154,
-  "message_id": 154,
-  "planning_agent_output": "JSON string",
-  "execution_agent_output": "JSON string",
-  "suggested_email_body": "AI suggested response text",
-  "email_body_approved": null,
-  "follow_up_needed": true,
-  "follow_up_date": "2024-12-30",
-  "review": false,
-  "tags": ["tag1", "tag2"],
-  "trace_id": "cb52a891-e4f5-4d2c-9eb3-a7c8340e6a14",
-  "processing_time": 1.23,
-  "created_at": "2025-04-28T10:45:00.000000+00:00",
-  "updated_at": "2025-04-28T10:45:00.000000+00:00"
-}
+```
+src/
+├── components/
+│   ├── ui/                    # Base UI components (Button, Card, etc.)
+│   ├── CreatorDossierCard.tsx # Main expandable card component
+│   ├── DecisionHub.tsx        # Bottom action buttons
+│   └── ProgressIndicator.tsx  # Top progress bar
+├── data/
+│   └── sampleData.ts          # Sample creator data
+├── types/
+│   └── creator.ts             # TypeScript interfaces
+└── App.tsx                    # Main application component
 ```
 
-## Technology Stack
+## 🎨 Design System
 
-- Next.js
-- TypeScript
-- Supabase
-- Shadcn UI
-- Tailwind CSS
+The UI follows the progressive disclosure pattern with:
 
-## Learn More
+- **Clean collapsed state** showing essential information
+- **Smooth expand/collapse** animations for detailed sections
+- **Fixed decision interface** always accessible at bottom
+- **Consistent styling** with Tailwind CSS
+- **Responsive layout** adapting to different screen sizes
 
-To learn more about Next.js, take a look at the following resources:
+## 📊 Sample Data
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The prototype uses sample data matching the specification:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Creator handle: @athienor6
+- Key metrics: Views, Rate, CPM rankings
+- Rate packages: YouTube Integration & CPM deals
+- Conversation history: 2 messages between team and creator
+- Interactive messaging capability
 
-## Deploy on Vercel
+## 🛠️ Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **React 18** - UI framework
+- **TypeScript** - Type safety
+- **Framer Motion** - Smooth animations
+- **Tailwind CSS** - Utility-first styling
+- **Vite** - Fast build tool
+- **Lucide React** - Icon library
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎭 Interactive Demo
+
+1. **View Creator Summary**: See key metrics at a glance
+2. **Expand Sections**: Click to reveal detailed information
+3. **Review Conversations**: Chat-like message history
+4. **Make Decisions**: Use Pass/Maybe/Favorite buttons
+5. **Send Messages**: Interact directly with creators
+
+## 📱 Responsive Design
+
+Optimized for:
+- Mobile devices (320px+)
+- Tablets (768px+)
+- Desktop (1024px+)
+
+The interface adapts seamlessly across all screen sizes while maintaining the core user experience.
+
+---
+
+Built with ❤️ using 21st.dev components and modern React patterns.

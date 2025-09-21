@@ -1,0 +1,10 @@
+openai
+openai-agents
+pydantic
+python-dotenv
+pydantic-ai[logfire]
+nest_asyncio
+uuid
+langfuse
+supabase
+rich

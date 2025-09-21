@@ -2,17 +2,18 @@ import React from "react";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { UserNav } from "@/components/auth/user-nav";
-import { ActiveNavLink } from "@/components/active-nav-link";
-import { NavbarTitle } from "@/components/navbar-title";
+import { ActiveNavLink } from "@/components/common/active-nav-link";
+import { NavbarTitle } from "@/components/common/navbar-title";
 
 export async function Navigation() {
   const user = await getCurrentUser();
+  const isAdmin = user?.role === 'admin';
 
   const routes = [
-    {
+    ...(isAdmin ? [{
       href: "/playground",
       label: "Playground",
-    },
+    }] : []),
     {
       href: "/research",
       label: "Research",
@@ -24,6 +25,10 @@ export async function Navigation() {
     {
       href: "/conversations",
       label: "Conversations",
+    },
+    {
+      href: "/marketplace",
+      label: "Marketplace",
     },
     {
       href: "/performance",

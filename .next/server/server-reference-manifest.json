@@ -1,0 +1,99 @@
+{
+  "node": {
+    "00aaef7e4997286cdf3c6c174e68da51dde584756c": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/campaigns/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/playground/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/research/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "rsc",
+        "app/campaigns/page": "rsc",
+        "app/playground/page": "rsc",
+        "app/_not-found/page": "rsc",
+        "app/research/page": "rsc"
+      }
+    },
+    "00d79cdb244706011c734a5bf0e8d8dd39f82ca601": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/campaigns/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/playground/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/research/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "rsc",
+        "app/campaigns/page": "rsc",
+        "app/playground/page": "rsc",
+        "app/_not-found/page": "rsc",
+        "app/research/page": "rsc"
+      }
+    },
+    "00da7da32787369b8ca4080ac4fd6df638c96b7dad": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/campaigns/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/playground/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/research/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CProjects%5C%5Ch20.campaign.staging%5C%5Csrc%5C%5Clib%5C%5Cauth.ts%22%2C%5B%7B%22id%22%3A%2200aaef7e4997286cdf3c6c174e68da51dde584756c%22%2C%22exportedName%22%3A%22getCurrentUser%22%7D%2C%7B%22id%22%3A%2200d79cdb244706011c734a5bf0e8d8dd39f82ca601%22%2C%22exportedName%22%3A%22signInWithGoogle%22%7D%2C%7B%22id%22%3A%2200da7da32787369b8ca4080ac4fd6df638c96b7dad%22%2C%22exportedName%22%3A%22signOut%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "rsc",
+        "app/campaigns/page": "rsc",
+        "app/playground/page": "rsc",
+        "app/_not-found/page": "rsc",
+        "app/research/page": "rsc"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "qRpcICtuWH7KBUoLeD4JOBtmKhOWR+u/9c4B3iWQuvo="
+}
