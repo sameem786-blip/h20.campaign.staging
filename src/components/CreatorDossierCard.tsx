@@ -138,7 +138,7 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
       {[2, 1, 0].map((depth) => (
         <motion.div
           key={depth}
-          className="absolute inset-0 mx-4 my-4 overflow-auto"
+          className="absolute inset-0 mx-4 my-4 overflow-auto overflow-auto"
           style={{
             zIndex: depth === 0 ? 10 : 5 - depth,
             scale: 1 - (depth * 0.02),
@@ -167,7 +167,7 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                 damping: 30
               }}
             >
-              <Card className="shadow-2xl border-2 border-gray-100 overflow-hidden bg-gradient-to-br from-white via-white to-gray-50 h-full flex flex-col relative">
+              <Card className="shadow-2xl border-2 border-gray-100 overflow-auto bg-gradient-to-br from-white via-white to-gray-50 h-full flex flex-col relative">
                 {/* Drag feedback overlays */}
                 <motion.div
                   className="absolute inset-0 bg-red-500/20 flex items-center justify-center z-30 pointer-events-none"
@@ -312,7 +312,11 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                           const isActive = metric.key === activeSortMetric;
 
                           return (
-                            <motion.div
+                            <GridBackground
+                                                
+                                                className="cursor-default overflow-hidden"
+                                                                                                >
+                            {/* <motion.div
                               key={metric.label}
                               className={`text-center rounded-xl backdrop-blur shadow-md transition-all duration-300  ${
                                 isActive
@@ -320,25 +324,9 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                                   : 'bg-white/80 border border-gray-200'
                               }`}
                               transition={{ delay: index * 0.1 }}
-                            >
-                              {/* <div className={`text-2xl font-bold ${metric.color} mb-1`}>
-                                {metric.value}
-                              </div>
-                              <div className={`text-sm mb-1 ${isActive ? 'text-gray-800 font-semibold' : 'text-gray-600'}`}>
-                                {metric.label}
-                              </div>
-                              <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                isActive
-                                  ? `${metric.color} bg-white shadow-sm`
-                                  : 'text-gray-500 bg-gray-100'
-                              }`}>
-                                {metric.rank === "N/A" ? "N/A" : `Rank #${metric.rank}`}
-                              </div> */}
+                            > */}
+  
 
-                              <GridBackground
-                                                  
-                                                  className="cursor-default overflow-hidden"
-                                                                                                  >
                                                   <div className={`text-2xl font-bold ${metric.color} mb-1`}>
                                 {metric.value}
                               </div>
@@ -352,8 +340,8 @@ export const CreatorDossierCard: React.FC<CreatorDossierCardProps> = ({
                               }`}>
                                 {metric.rank === "N/A" ? "N/A" : `Rank #${metric.rank}`}
                               </div>
+                            {/* </motion.div> */}
                                                   </GridBackground>
-                            </motion.div>
                           );
                         });
                       })()}
